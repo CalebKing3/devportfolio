@@ -1,0 +1,168 @@
+:root {
+  /* Dark theme colors - WebStorm inspired */
+  --dark-editor-bg: #1e1f22;
+  --dark-editor-text: #a9b7c6;
+  --dark-secondary-bg: #2b2d30;
+  --dark-border-color: #323232;
+  --dark-active-tab: #323232;
+  --dark-menu-bg: #3c3f41;
+  --dark-statusbar-bg: #27282b;
+  --dark-selection-bg: #214283;
+  --dark-line-number: #606366;
+  --dark-line-number-active: #a4a3a3;
+  --dark-gutter-bg: #313335;
+  --dark-breadcrumbs-bg: #27292b;
+  
+  /* Light theme colors */
+  --light-editor-bg: #ffffff;
+  --light-editor-text: #2c3e50;
+  --light-secondary-bg: #f7f7f7;
+  --light-border-color: #e6e6e6;
+  --light-active-tab: #ffffff;
+  --light-menu-bg: #ececec;
+  --light-statusbar-bg: #ececec;
+  --light-selection-bg: #c2dbff;
+  --light-line-number: #adb5bd;
+  --light-line-number-active: #6c757d;
+  --light-gutter-bg: #f0f0f0;
+  --light-breadcrumbs-bg: #f5f5f5;
+  
+  /* WebStorm accent colors */
+  --dark-accent-blue: #4a9eff;
+  --dark-accent-purple: #9876aa;
+  --dark-accent-green: #6a8759;
+  --dark-accent-orange: #cc7832;
+  --dark-accent-yellow: #ffc66d;
+  --dark-accent-red: #ff5647;
+  
+  --light-accent-blue: #0066bf;
+  --light-accent-purple: #7a3e9d;
+  --light-accent-green: #008000;
+  --light-accent-orange: #b75400;
+  --light-accent-yellow: #bb8400;
+  --light-accent-red: #cf0000;
+  
+  /* Syntax highlighting - Dark WebStorm */
+  --dark-keyword-color: #cc7832;
+  --dark-string-color: #6a8759;
+  --dark-comment-color: #808080;
+  --dark-number-color: #6897bb;
+  --dark-type-color: #ffc66d;
+  --dark-method-color: #ffc66d;
+  --dark-class-color: #a9b7c6;
+  --dark-function-color: #a9b7c6;
+  --dark-constant-color: #9876aa;
+  
+  /* Syntax highlighting - Light */
+  --light-keyword-color: #0033b3;
+  --light-string-color: #008000;
+  --light-comment-color: #8c8c8c;
+  --light-number-color: #1750eb;
+  --light-type-color: #000080;
+  --light-method-color: #7a3e9d;
+  --light-class-color: #000000;
+  --light-function-color: #00627a;
+  --light-constant-color: #871094;
+}
+
+/* Dark theme (default) */
+:root {
+  /* Base colors */
+  --editor-bg: var(--dark-editor-bg);
+  --editor-text: var(--dark-editor-text);
+  --secondary-bg: var(--dark-secondary-bg);
+  --border-color: var(--dark-border-color);
+  --active-tab: var(--dark-active-tab);
+  --menu-bg: var(--dark-menu-bg);
+  --statusbar-bg: var(--dark-statusbar-bg);
+  --selection-bg: var(--dark-selection-bg);
+  --line-number: var(--dark-line-number);
+  --line-number-active: var(--dark-line-number-active);
+  --gutter-bg: var(--dark-gutter-bg);
+  --breadcrumbs-bg: var(--dark-breadcrumbs-bg);
+  
+  /* Accent colors */
+  --accent-blue: var(--dark-accent-blue);
+  --accent-purple: var(--dark-accent-purple);
+  --accent-green: var(--dark-accent-green);
+  --accent-orange: var(--dark-accent-orange);
+  --accent-yellow: var(--dark-accent-yellow);
+  --accent-red: var(--dark-accent-red);
+  
+  /* Syntax highlighting */
+  --keyword-color: var(--dark-keyword-color);
+  --string-color: var(--dark-string-color);
+  --comment-color: var(--dark-comment-color);
+  --number-color: var(--dark-number-color);
+  --type-color: var(--dark-type-color);
+  --method-color: var(--dark-method-color);
+  --class-color: var(--dark-class-color);
+  --function-color: var(--dark-function-color);
+  --constant-color: var(--dark-constant-color);
+}
+
+/* Light theme */
+:root.light {
+  /* Base colors */
+  --editor-bg: var(--light-editor-bg);
+  --editor-text: var(--light-editor-text);
+  --secondary-bg: var(--light-secondary-bg);
+  --border-color: var(--light-border-color);
+  --active-tab: var(--light-active-tab);
+  --menu-bg: var(--light-menu-bg);
+  --statusbar-bg: var(--light-statusbar-bg);
+  --selection-bg: var(--light-selection-bg);
+  --line-number: var(--light-line-number);
+  --line-number-active: var(--light-line-number-active);
+  --gutter-bg: var(--light-gutter-bg);
+  --breadcrumbs-bg: var(--light-breadcrumbs-bg);
+  
+  /* Accent colors */
+  --accent-blue: var(--light-accent-blue);
+  --accent-purple: var(--light-accent-purple);
+  --accent-green: var(--light-accent-green);
+  --accent-orange: var(--light-accent-orange);
+  --accent-yellow: var(--light-accent-yellow);
+  --accent-red: var(--light-accent-red);
+  
+  /* Syntax highlighting */
+  --keyword-color: var(--light-keyword-color);
+  --string-color: var(--light-string-color);
+  --comment-color: var(--light-comment-color);
+  --number-color: var(--light-number-color);
+  --type-color: var(--light-type-color);
+  --method-color: var(--light-method-color);
+  --class-color: var(--light-class-color);
+  --function-color: var(--light-function-color);
+  --constant-color: var(--light-constant-color);
+}
+
+/* High contrast mode */
+:root.high-contrast {
+  --editor-text: #ffffff;
+  --accent-blue: #00b7ff;
+  --accent-purple: #ff00ff;
+  --accent-green: #00ff00;
+  --accent-orange: #ff8000;
+}
+
+/* Large text mode */
+:root.large-text {
+  font-size: 18px;
+}
+
+/* Accessibility focus styles */
+*:focus-visible {
+  outline: 3px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
