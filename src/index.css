@@ -31,11 +31,12 @@ html {
 /* IDE Window */
 .ide-window {
   display: grid;
-  grid-template-rows: auto auto auto 1fr auto auto;
+  grid-template-rows: auto auto 1fr auto;
   min-height: 100vh;
   background-color: var(--editor-bg);
   overflow: hidden;
   width: 100%;
+  padding-bottom: 32px; /* Minimum height of collapsed terminal */
 }
 
 /* Menu Bar - WebStorm style */
@@ -125,10 +126,9 @@ html {
 .ide-main {
   display: grid;
   grid-template-columns: auto 1fr auto;
-  overflow: auto;
+  overflow: visible;
   height: 100%;
-  position: relative;
-  z-index: 0;
+  padding-bottom: 32px;
 }
 
 /* Editor Area - WebStorm style */
@@ -152,8 +152,6 @@ html {
   overflow: auto;
   max-height: none;
   height: auto;
-  min-height: 200px; /* Give some minimum height to content */
-  padding-bottom: calc(200px + 24px + 32px); /* Add padding for terminal height + statusbar + terminal tabs */
 }
 
 /* WebStorm Code Editor */
@@ -255,6 +253,86 @@ html {
   padding: 8px;
   overflow: auto;
   height: calc(100% - 30px);
+}
+
+/* Bottom Panel - WebStorm style */
+.ide-bottom-panel-container {
+  background-color: var(--secondary-bg);
+  border-top: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.ide-bottom-panel-collapsed {
+  height: 32px !important;
+}
+
+.ide-bottom-panel-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  cursor: ns-resize;
+  z-index: 1;
+  transform: translateY(-2px);
+}
+
+.ide-bottom-panel-handle:hover,
+.ide-bottom-panel-handle:active {
+  background-color: var(--accent-blue);
+  opacity: 0.5;
+}
+
+.ide-bottom-panel-tabs {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding-left: 8px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--secondary-bg);
+}
+
+.ide-bottom-panel-tab {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  height: 100%;
+  cursor: pointer;
+  opacity: 0.7;
+  font-size: 12px;
+  border-right: 1px solid var(--border-color);
+}
+
+.ide-bottom-panel-tab:hover {
+  opacity: 0.9;
+  background-color: var(--active-tab);
+}
+
+.ide-bottom-panel-tab.active {
+  background-color: var(--editor-bg);
+  opacity: 1;
+  border-top: 2px solid var(--accent-blue);
+  font-weight: 500;
+}
+
+.ide-bottom-panel-btn {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.ide-bottom-panel-btn:hover {
+  opacity: 0.9;
+  background-color: var(--active-tab);
+}
+
+.ide-bottom-panel-content {
+  height: calc(100% - 32px);
+  overflow: hidden;
+  position: relative;
 }
 
 /* Status Bar - WebStorm style */
@@ -610,172 +688,4 @@ html {
     z-index: 30;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
-  
-  .ide-toolbar {
-    overflow-x: auto;
-    justify-content: flex-start;
-  }
-  
-  .ide-bottom-panel-container {
-    position: fixed;
-    bottom: 24px;
-    left: 0;
-    right: 0;
-    z-index: 40;
-  }
-  
-  .ide-bottom-panel-collapsed {
-    bottom: 0;
-  }
-}
-
-/* IDE Toolbar - JetBrains style */
-.ide-toolbar {
-  background-color: var(--secondary-bg);
-  border-bottom: 1px solid var(--border-color);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 8px;
-  height: 28px;
-  user-select: none;
-}
-
-.ide-toolbar-btn {
-  padding: 4px;
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--editor-text);
-  margin: 0 1px;
-  transition: background-color 0.1s;
-}
-
-.ide-toolbar-btn:hover {
-  background-color: var(--active-tab);
-}
-
-.ide-toolbar-separator {
-  width: 1px;
-  height: 16px;
-  background-color: var(--border-color);
-  margin: 0 6px;
-}
-
-.ide-toolbar-status {
-  font-size: 11px;
-  color: var(--editor-text);
-  opacity: 0.8;
-  padding: 0 6px;
-  max-width: 200px;
-}
-
-.ide-app-logo {
-  border-right: 1px solid var(--border-color);
-  height: 100%;
-}
-
-/* Enhanced Bottom Panel - JetBrains Terminal style */
-.ide-bottom-panel-container {
-  position: fixed;
-  background-color: var(--secondary-bg);
-  border-top: 1px solid var(--border-color);
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  transition: height 0.3s ease;
-  overflow: hidden;
-  bottom: 24px; /* Position above the statusbar */
-  left: 0;
-  right: 0;
-  z-index: 40;
-}
-
-.ide-bottom-panel-collapsed {
-  height: 32px !important;
-  min-height: 32px;
-  overflow: hidden;
-}
-
-.ide-bottom-panel-handle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  cursor: n-resize;
-  z-index: 10;
-}
-
-.ide-bottom-panel-handle:hover {
-  background-color: var(--accent-blue);
-}
-
-.ide-bottom-panel-tabs {
-  display: flex;
-  background-color: var(--secondary-bg);
-  border-bottom: 1px solid var(--border-color);
-  height: 32px;
-  overflow: hidden;
-}
-
-.ide-bottom-panel-tab {
-  padding: 0 12px;
-  display: flex;
-  align-items: center;
-  height: 100%;
-  font-size: 12px;
-  color: var(--editor-text);
-  border-right: 1px solid var(--border-color);
-  user-select: none;
-}
-
-.ide-bottom-panel-tab:hover {
-  background-color: var(--active-tab);
-}
-
-.ide-bottom-panel-tab.active {
-  background-color: var(--editor-bg);
-  border-top: 2px solid var(--accent-blue);
-  margin-top: -1px;
-  height: calc(100% + 1px);
-  color: var(--accent-blue);
-}
-
-.ide-bottom-panel-btn {
-  padding: 0 8px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  color: var(--editor-text);
-}
-
-.ide-bottom-panel-btn:hover {
-  background-color: var(--active-tab);
-}
-
-.ide-bottom-panel-content {
-  flex: 1;
-  overflow: auto;
-  position: relative;
-  background-color: var(--editor-bg);
-  height: calc(100% - 32px);
-}
-
-/* Notifications indicator */
-.ide-notification-indicator {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--accent-blue);
-}
-
-/* Cursor when dragging the terminal resizer */
-.select-none {
-  user-select: none !important;
-  cursor: n-resize !important;
 }

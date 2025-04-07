@@ -69,15 +69,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const terminalPanelRef = React.useRef<HTMLDivElement>(null);
 
-  // Effect to scroll to terminal on initial load
-  useEffect(() => {
-    if (isBottomPanelOpen && terminalPanelRef.current) {
-      setTimeout(() => {
-        // Use scrollIntoView to ensure the terminal is visible
-        terminalPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-      }, 100);
-    }
-  }, []);
+  // No automatic scroll to terminal on page load
 
   const navItems = [
     { path: '/', icon: <Home size={16} />, label: 'Home' },
@@ -85,6 +77,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     { path: '/projects', icon: <FolderGit2 size={16} />, label: 'Projects' },
     { path: '/articles', icon: <FileText size={16} />, label: 'Blog' },
     { path: '/resume', icon: <FileText size={16} />, label: 'Resume' },
+    { path: '/youtube', icon: <Play size={16} />, label: 'YouTube' },
     { path: '/contact', icon: <Mail size={16} />, label: 'Contact' },
   ];
 
@@ -188,6 +181,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       case '/articles': return 'articles.tsx';
       case '/contact': return 'contact.tsx';
       case '/resume': return 'resume.tsx';
+      case '/youtube': return 'youtube.tsx';
       default: return 'unknown.tsx';
     }
   };

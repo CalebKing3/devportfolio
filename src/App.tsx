@@ -7,6 +7,7 @@ import Projects from './pages/Projects';
 import Articles from './pages/Articles';
 import Contact from './pages/Contact';
 import Resume from './pages/Resume';
+import YouTube from './pages/YouTube';
 import UniversalSearch from './components/UniversalSearch';
 import UniversalSearchTooltip from './components/UniversalSearchTooltip';
 
@@ -34,6 +35,7 @@ function App() {
           <Route path="/articles" element={<Articles />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/resume" element={<Resume />} />
+          <Route path="/youtube" element={<YouTube />} />
           {/* Redirect any other routes to home */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

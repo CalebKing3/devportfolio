@@ -13,6 +13,7 @@ A modern, IDE-inspired developer portfolio website built with React, TypeScript,
 - 🔄 Smooth animations with Framer Motion
 - 📱 Fully responsive on all devices
 - 🧩 Modular components for easy customization
+- 📺 YouTube channel integration with customizable URL
 - 🚀 Easy deployment to Vercel
 
 ## Live Demo
@@ -43,14 +44,19 @@ npm install
 yarn install
 ```
 
-3. Start the development server
+3. Create a `.env` file in the root directory based on `.env.example`
+```bash
+cp .env.example .env
+```
+
+4. Start the development server
 ```bash
 npm run dev
 # or
 yarn dev
 ```
 
-4. Open [http://localhost:5173](http://localhost:5173) to view it in your browser
+5. Open [http://localhost:5173](http://localhost:5173) to view it in your browser
 
 #### Option 2: GitHub Codespaces
 
@@ -86,6 +92,57 @@ Modify the projects array in `src/pages/Projects.tsx` to showcase your own proje
 ### Resume
 
 Replace the PDF file at `public/CalebKing-Sr.Eng_Director.pdf` with your own resume.
+
+### YouTube Channel (Optional)
+
+The portfolio includes an optional YouTube page to showcase videos from your YouTube channel. By default, it uses placeholder data, but you can connect it to real YouTube data by following these steps:
+
+#### Option 1: Use YouTube Page with Mock Data (No API Key Required)
+
+1. **Set Your Default Channel URL:**
+   - Edit `src/pages/YouTube.tsx` and update the `DEFAULT_CHANNEL_URL` constant with your YouTube channel URL
+   - The page will display placeholder videos with your channel name
+   - This is sufficient if you just want to show a representation of your channel
+
+#### Option 2: Display Real YouTube Videos (Recommended)
+
+1. **Create a Google Cloud Project:**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project (or select an existing one)
+   - Note your Project ID, you'll need it later
+
+2. **Enable the YouTube Data API:**
+   - In your Google Cloud project, go to "APIs & Services" > "Library"
+   - Search for "YouTube Data API v3"
+   - Click on the API and press "Enable"
+
+3. **Create API Credentials:**
+   - Go to "APIs & Services" > "Credentials"
+   - Click "Create Credentials" > "API Key"
+   - Copy your new API key
+
+4. **Set Up Environment Variables:**
+   - Create a `.env` file in the root of your project if it doesn't exist
+   - Add your YouTube API key: `VITE_YOUTUBE_API_KEY=your_api_key_here`
+   - For production deployment, add this as an environment variable in your hosting provider's settings
+
+5. **Configure Your Channel:**
+   - Edit `src/pages/YouTube.tsx` and update the `DEFAULT_CHANNEL_URL` constant with your YouTube channel URL
+   - Supported formats include:
+     - `https://www.youtube.com/channel/CHANNEL_ID`
+     - `https://www.youtube.com/@username`
+     - `https://www.youtube.com/c/channelname`
+     - `https://www.youtube.com/user/username`
+
+6. **Customize Display Options (Optional):**
+   - Adjust the `MAX_RESULTS` constant in `src/pages/YouTube.tsx` to change the number of videos displayed
+   - Modify the grid layout in the component to change the video card design or arrangement
+
+#### YouTube API Quotas and Limits
+
+- The YouTube Data API has daily quota limits (typically 10,000 units per day for new projects)
+- Each video search request costs about 100 units
+- Consider implementing caching if you expect high traffic to your portfolio
 
 ### Blog Articles
 
@@ -135,6 +192,7 @@ If you need to add environment variables:
 1. Go to your project on the Vercel dashboard
 2. Navigate to "Settings" > "Environment Variables"
 3. Add your variables in the format: NAME = value
+4. **For YouTube Integration:** If you're using the YouTube API, add your `VITE_YOUTUBE_API_KEY` to enable YouTube video fetching
 
 ### Automatic Deployments
 
