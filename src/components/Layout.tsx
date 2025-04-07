@@ -165,6 +165,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     localStorage.setItem('bottomPanelOpen', JSON.stringify(isBottomPanelOpen));
   }, [isBottomPanelOpen]);
 
+  // Effect to update CSS variable for terminal height
+  useEffect(() => {
+    // Update the CSS variable for terminal height
+    document.documentElement.style.setProperty('--terminal-height', isBottomPanelOpen ? `${terminalHeight}px` : '32px');
+  }, [terminalHeight, isBottomPanelOpen]);
+
   // On mobile, close sidebar when location changes
   useEffect(() => {
     if (isMobile) {
@@ -363,7 +369,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             className={`ide-sidebar copilot-sidebar ${!isStructureSidebarOpen ? 'collapsed' : ''}`}
           >
             {!isStructureSidebarOpen ? (
-              <div className="flex flex-col items-center py-2 space-y-2">
+              <div className="flex flex-col items-center py-4 space-y-4">
                 <button 
                   onClick={() => {
                     setStructureSidebarOpen(true);

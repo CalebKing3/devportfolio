@@ -46,8 +46,8 @@ const Shortcuts: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
   ];
 
   return (
-    <div className="h-full overflow-auto p-4">
-      <div className="space-y-6">
+    <div className="h-full overflow-auto p-6">
+      <div className="space-y-8">
         {shortcuts.map((category, index) => (
           <motion.div
             key={category.category}
@@ -55,32 +55,32 @@ const Shortcuts: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
           >
-            <h3 className="text-accent-purple font-medium mb-3 flex items-center">
-              <ChevronRight size={16} className="mr-1" />
+            <h3 className="text-accent-purple font-medium mb-4 flex items-center">
+              <ChevronRight size={16} className="mr-2" />
               {category.category}
             </h3>
-            <div className="space-y-2">
+            <div className="space-y-3">
               {category.items.map((shortcut, itemIndex) => (
                 <motion.div
                   key={itemIndex}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 + itemIndex * 0.05 }}
-                  className="flex items-center justify-between py-1 px-2 rounded hover:bg-active-tab group"
+                  className="flex items-center justify-between py-2 px-3 rounded hover:bg-active-tab group"
                 >
                   <div className="flex items-center space-x-2 text-editor-text">
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center space-x-1.5">
                       {Array.isArray(shortcut.keys) ? (
                         shortcut.keys.map((key, keyIndex) => (
                           <React.Fragment key={keyIndex}>
-                            <kbd className="px-2 py-1 bg-editor-bg rounded text-xs font-mono border border-border-color">
+                            <kbd className="px-2 py-1 bg-editor-bg rounded text-xs font-mono border border-border-color shadow-sm">
                               {key}
                             </kbd>
                             {keyIndex < shortcut.keys.length - 1 && <span>+</span>}
                           </React.Fragment>
                         ))
                       ) : (
-                        <code className="px-2 py-1 bg-editor-bg rounded text-xs font-mono text-accent-green">
+                        <code className="px-2 py-1 bg-editor-bg rounded text-xs font-mono text-accent-green shadow-sm">
                           {shortcut.keys}
                         </code>
                       )}

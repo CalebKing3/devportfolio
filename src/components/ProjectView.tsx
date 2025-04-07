@@ -30,12 +30,12 @@ const ProjectView: React.FC<ProjectViewProps> = ({
         return (
           <div key={currentPath}>
             <div 
-              className="file-tree-item"
+              className="file-tree-item flex items-center"
               onClick={() => toggleFolder(currentPath)}
-              style={{ paddingLeft: `${path.split('/').length * 1}rem` }}
+              style={{ paddingLeft: isSidebarOpen ? `${path.split('/').length * 1}rem` : '0.5rem' }}
             >
-              {item.icon}
-              {isSidebarOpen && <span className="ml-2">{name}</span>}
+              <span className={isSidebarOpen ? '' : 'mx-auto'}>{item.icon}</span>
+              {isSidebarOpen && <span className="ml-2 truncate">{name}</span>}
             </div>
             <AnimatePresence>
               {isExpanded && (
@@ -56,11 +56,11 @@ const ProjectView: React.FC<ProjectViewProps> = ({
       return (
         <div
           key={currentPath}
-          className="file-tree-item"
-          style={{ paddingLeft: `${(path.split('/').length + 1) * 1}rem` }}
+          className="file-tree-item flex items-center"
+          style={{ paddingLeft: isSidebarOpen ? `${(path.split('/').length + 1) * 1}rem` : '0.5rem' }}
         >
-          {item.icon}
-          {isSidebarOpen && <span className="ml-2">{name}</span>}
+          <span className={isSidebarOpen ? '' : 'mx-auto'}>{item.icon}</span>
+          {isSidebarOpen && <span className="ml-2 truncate">{name}</span>}
         </div>
       );
     });

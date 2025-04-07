@@ -26,12 +26,12 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ currentView, onViewChange, 
             currentView === view.id 
               ? 'bg-selection-bg text-accent-blue' 
               : 'text-editor-text hover:bg-active-tab'
-          }`}
+          } ${isSidebarOpen ? 'justify-start' : 'justify-center'} w-full`}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          {view.icon}
-          {isSidebarOpen && <span className="ml-2">{view.label}</span>}
+          <span className={isSidebarOpen ? '' : 'mx-auto'}>{view.icon}</span>
+          {isSidebarOpen && <span className="ml-2 truncate">{view.label}</span>}
         </motion.button>
       ))}
     </div>

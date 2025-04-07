@@ -36,7 +36,7 @@ html {
   background-color: var(--editor-bg);
   overflow: hidden;
   width: 100%;
-  padding-bottom: 32px; /* Minimum height of collapsed terminal */
+  padding-bottom: calc(56px + var(--terminal-height, 200px)); /* Space for terminal + status bar */
 }
 
 /* Menu Bar - WebStorm style */
@@ -75,6 +75,51 @@ html {
   color: #fff;
 }
 
+/* Top Toolbar - WebStorm style */
+.ide-toolbar {
+  background-color: var(--secondary-bg);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 8px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+.ide-toolbar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 24px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.ide-toolbar-btn:hover {
+  background-color: var(--active-tab);
+}
+
+.ide-toolbar-btn:active {
+  background-color: var(--selection-bg);
+}
+
+.ide-toolbar-separator {
+  width: 1px;
+  height: 16px;
+  background-color: var(--border-color);
+  margin: 0 6px;
+}
+
+.ide-toolbar-status {
+  font-size: 11px;
+  color: var(--editor-text);
+  opacity: 0.8;
+  margin-left: 8px;
+}
+
 /* Sidebar - WebStorm style */
 .ide-sidebar {
   background-color: var(--secondary-bg);
@@ -84,7 +129,10 @@ html {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  max-height: 100%;
+  height: calc(100vh - 156px - var(--terminal-height, 200px));
+  position: sticky;
+  top: 96px; /* Account for menubar, toolbar, and breadcrumbs */
+  z-index: 25;
 }
 
 .ide-sidebar.collapsed {
@@ -92,21 +140,25 @@ html {
 }
 
 .ide-sidebar-header {
-  padding: 8px;
+  padding: 10px 12px;
   font-size: 11px;
-  font-weight: bold;
+  font-weight: 500;
   color: var(--editor-text);
   opacity: 0.7;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   background-color: var(--secondary-bg);
   border-bottom: 1px solid var(--border-color);
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .ide-sidebar-item {
   display: flex;
   align-items: center;
-  padding: 6px 12px;
+  padding: 8px 12px;
   color: var(--editor-text);
   cursor: pointer;
   font-size: 13px;
@@ -122,6 +174,11 @@ html {
   color: #fff;
 }
 
+.ide-sidebar-item svg {
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
 /* Main Content Area - WebStorm style */
 .ide-main {
   display: grid;
@@ -129,6 +186,9 @@ html {
   overflow: visible;
   height: 100%;
   padding-bottom: 32px;
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
 }
 
 /* Editor Area - WebStorm style */
@@ -143,6 +203,7 @@ html {
   height: auto;
   min-height: 0;
   flex: 1;
+  width: 100%;
 }
 
 .editor-content {
@@ -255,11 +316,17 @@ html {
   height: calc(100% - 30px);
 }
 
-/* Bottom Panel - WebStorm style */
+/* Bottom Panel - Fixed at bottom of viewport */
 .ide-bottom-panel-container {
   background-color: var(--secondary-bg);
   border-top: 1px solid var(--border-color);
-  overflow: hidden;
+  position: fixed;
+  bottom: 24px; /* Accounts for status bar height */
+  left: 0;
+  right: 0;
+  z-index: 50;
+  transition: height 0.2s ease;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .ide-bottom-panel-collapsed {
@@ -273,7 +340,7 @@ html {
   right: 0;
   height: 4px;
   cursor: ns-resize;
-  z-index: 1;
+  z-index: 51;
   transform: translateY(-2px);
 }
 
@@ -287,7 +354,7 @@ html {
   display: flex;
   align-items: center;
   height: 32px;
-  padding-left: 8px;
+  padding-left: 12px;
   border-bottom: 1px solid var(--border-color);
   background-color: var(--secondary-bg);
 }
@@ -295,12 +362,18 @@ html {
 .ide-bottom-panel-tab {
   display: flex;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 16px;
   height: 100%;
   cursor: pointer;
   opacity: 0.7;
   font-size: 12px;
   border-right: 1px solid var(--border-color);
+  min-width: 100px;
+  justify-content: center;
+}
+
+.ide-bottom-panel-tab svg {
+  margin-right: 8px;
 }
 
 .ide-bottom-panel-tab:hover {
@@ -316,9 +389,10 @@ html {
 }
 
 .ide-bottom-panel-btn {
-  padding: 0 8px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 100%;
   cursor: pointer;
   opacity: 0.7;
@@ -331,15 +405,16 @@ html {
 
 .ide-bottom-panel-content {
   height: calc(100% - 32px);
-  overflow: hidden;
+  overflow: auto;
   position: relative;
+  background-color: var(--editor-bg);
 }
 
 /* Status Bar - WebStorm style */
 .ide-statusbar {
   background-color: var(--statusbar-bg);
   color: var(--editor-text);
-  padding: 0 8px;
+  padding: 0;
   font-size: 11px;
   user-select: none;
   display: flex;
@@ -347,8 +422,27 @@ html {
   justify-content: space-between;
   height: 24px;
   border-top: 1px solid var(--border-color);
-  position: sticky;
+  position: fixed;
   bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 51;
+}
+
+.ide-statusbar-item {
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ide-statusbar-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.ide-statusbar-item svg {
+  margin-right: 5px;
 }
 
 /* Scrollbars - WebStorm style */
@@ -521,8 +615,18 @@ html {
 
 /* Copilot Sidebar Styles */
 .copilot-sidebar {
+  background-color: var(--secondary-bg);
   border-left: 1px solid var(--border-color);
   border-right: none;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: calc(100vh - 156px - var(--terminal-height, 200px));
+  position: sticky;
+  top: 96px; /* Account for menubar, toolbar, and breadcrumbs */
+  z-index: 26;
 }
 
 .copilot-sidebar.collapsed {
@@ -674,18 +778,50 @@ html {
     position: fixed;
     top: 65px;
     left: 0;
-    bottom: 24px;
+    width: 50% !important;
+    bottom: 56px;
     z-index: 30;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    height: auto;
   }
   
   .copilot-sidebar:not(.collapsed) {
     position: fixed;
     top: 65px;
     right: 0;
-    bottom: 24px;
-    left: auto;
-    z-index: 30;
+    width: 50% !important;
+    bottom: 56px;
+    z-index: 31;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    height: auto;
   }
+}
+
+/* Collapsed sidebar icon styling */
+.ide-sidebar.collapsed .ide-sidebar-item {
+  justify-content: center;
+  padding: 8px 0;
+}
+
+.ide-sidebar.collapsed .ide-sidebar-item svg {
+  margin-right: 0;
+}
+
+.ide-sidebar button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--editor-text);
+  opacity: 0.7;
+}
+
+.ide-sidebar button:hover {
+  background-color: var(--active-tab);
+  opacity: 1;
 }

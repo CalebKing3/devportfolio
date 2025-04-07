@@ -79,16 +79,16 @@ const CopilotChat: React.FC<CopilotChatProps> = ({ isOpen }) => {
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-1 p-4">
-        <div className="bg-editor-bg rounded-lg p-4 mb-4">
+    <div className="flex flex-col h-full overflow-hidden">
+      <div className="flex-1 p-6 overflow-y-auto">
+        <div className="bg-editor-bg rounded-lg p-4 mb-6 shadow-sm">
           <p className="text-editor-text opacity-70">
             GitHub Copilot is ready to help! Ask me anything about the code.
           </p>
         </div>
 
         {/* Chat Messages */}
-        <div className="space-y-4 mb-4">
+        <div className="space-y-6 mb-6">
           <AnimatePresence mode="popLayout">
             {messages.map((message, index) => (
               <motion.div
@@ -100,7 +100,7 @@ const CopilotChat: React.FC<CopilotChatProps> = ({ isOpen }) => {
               >
                 <div className={`flex items-start max-w-[80%] ${message.type === 'bot' ? 'flex-row' : 'flex-row-reverse'}`}>
                   {message.type === 'bot' && (
-                    <Bot size={20} className="text-accent-purple mr-2 mt-1" />
+                    <Bot size={20} className="text-accent-purple mr-3 mt-1 flex-shrink-0" />
                   )}
                   <div className={`rounded-lg p-3 ${
                     message.type === 'bot' 
@@ -122,7 +122,7 @@ const CopilotChat: React.FC<CopilotChatProps> = ({ isOpen }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              className="space-y-2"
+              className="space-y-3 w-full"
             >
               {options.map((option, index) => (
                 <motion.button
@@ -133,8 +133,10 @@ const CopilotChat: React.FC<CopilotChatProps> = ({ isOpen }) => {
                   onClick={option.action}
                   className="w-full p-3 bg-editor-bg rounded-lg text-left hover:bg-active-tab transition-colors flex items-center"
                 >
-                  {option.icon}
-                  {option.label}
+                  <div className="w-6 flex justify-center mr-3 flex-shrink-0">
+                    {option.icon}
+                  </div>
+                  <span className="truncate">{option.label}</span>
                 </motion.button>
               ))}
             </motion.div>
@@ -143,28 +145,35 @@ const CopilotChat: React.FC<CopilotChatProps> = ({ isOpen }) => {
 
         {/* Action Buttons */}
         {messages.length === 0 && (
-          <div className="space-y-4">
+          <div className="space-y-3 w-full">
             <button 
               onClick={handleExplainCode}
-              className="w-full p-3 bg-editor-bg rounded-lg text-left hover:bg-active-tab transition-colors"
+              className="w-full p-3 bg-editor-bg rounded-lg text-left hover:bg-active-tab transition-colors shadow-sm flex items-center"
             >
-              <MessagesSquare size={16} className="inline-block mr-2 text-accent-purple" />
-              Explain this code
+              <div className="w-6 flex justify-center mr-3 flex-shrink-0">
+                <MessagesSquare size={16} className="text-accent-purple" />
+              </div>
+              <span className="truncate">Explain this code</span>
             </button>
-            <button className="w-full p-3 bg-editor-bg rounded-lg text-left hover:bg-active-tab transition-colors">
-              <MessageSquare size={16} className="inline-block mr-2 text-accent-purple" />
-              Suggest improvements
+            <button className="w-full p-3 bg-editor-bg rounded-lg text-left hover:bg-active-tab transition-colors shadow-sm flex items-center">
+              <div className="w-6 flex justify-center mr-3 flex-shrink-0">
+                <MessageSquare size={16} className="text-accent-purple" />
+              </div>
+              <span className="truncate">Suggest improvements</span>
             </button>
-            <button className="w-full p-3 bg-editor-bg rounded-lg text-left hover:bg-active-tab transition-colors">
-              <Search size={16} className="inline-block mr-2 text-accent-purple" />
-              Find similar patterns
+            <button className="w-full p-3 bg-editor-bg rounded-lg text-left hover:bg-active-tab transition-colors shadow-sm flex items-center">
+              <div className="w-6 flex justify-center mr-3 flex-shrink-0">
+                <Search size={16} className="text-accent-purple" />
+              </div>
+              <span className="truncate">Find similar patterns</span>
             </button>
           </div>
         )}
       </div>
 
-      <div className="p-4 border-t border-border-color">
-        <div className="text-sm text-editor-text opacity-70">
+      <div className="p-4 border-t border-border-color bg-secondary-bg">
+        <div className="text-sm text-editor-text opacity-70 flex items-center">
+          <Bot size={14} className="mr-2 text-accent-purple" />
           Powered by GitHub Copilot
         </div>
       </div>
