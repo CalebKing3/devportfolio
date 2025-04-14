@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { Eye, Code, Copy, ExternalLink } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import { github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import { useTheme } from '../hooks/useTheme';
+import { useTheme } from '@/hooks/useTheme';
 
 interface MarkdownPreviewProps {
   content: string;
@@ -13,8 +11,19 @@ interface MarkdownPreviewProps {
   githubUrl?: string;
 }
 
+interface CodeBlockProps {
+  className?: string;
+  children: React.ReactNode;
+}
+
+interface CodeRendererProps extends CodeBlockProps {
+  inline?: boolean;
+  node?: { type: string; value: string; position: unknown };
+}
+
 const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({ content, title, githubUrl }) => {
-  const [viewMode, setViewMode] = useState<'markdown' | 'preview'>('preview');
+  const SyntaxHighlighter = React.lazy(() => import('react-syntax-highlighter'));
+  const [viewMode, setViewMode] = useState<'markdown' | 'preview'>('preview');  
   const [copied, setCopied] = useState(false);
   const { theme } = useTheme();
 
@@ -29,34 +38,35 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({ content, title, githu
   };
 
   const renderers = {
-    code({ node, inline, className, children, ...props }: any) {
+    code: ({ className, children, inline }: CodeRendererProps) => {
       const match = /language-(\w+)/.exec(className || '');
-      return !inline && match ? (
-        <SyntaxHighlighter
-          style={theme === 'dark' ? atomOneDark : github}
-          language={match[1]}
-          PreTag="div"
-          customStyle={{
-            margin: '1.5rem 0',
-            borderRadius: '0.5rem',
-            background: 'var(--secondary-bg)',
-          }}
-          {...props}
-        >
-          {String(children).replace(/\n$/, '')}
-        </SyntaxHighlighter>
-      ) : (
-        <code className={className} {...props}>
-          {children}
-        </code>
-      );
+
+      if (!inline && match) {
+        return (
+          <React.Suspense fallback={<div className="min-h-[100px]" />}>
+            <SyntaxHighlighter
+              style={theme === 'dark' ? atomOneDark : undefined}
+              language={match[1]}
+              PreTag="div"
+              customStyle={{
+                margin: '1.5rem 0',
+                borderRadius: '0.5rem',
+                background: 'var(--secondary-bg)',
+              }}
+            >
+              {String(children).replace(/\n$/, '')}
+            </SyntaxHighlighter>
+          </React.Suspense>
+        );
+      } else {
+        return <code className={className}>{children}</code>;
+      }
     },
   };
 
   return (
-    <div className="min-h-screen bg-editor-bg">
-      {/* Header */}
-      <div className="border-b border-border-color bg-secondary-bg">
+    <div className="min-h-screen bg-editor-bg ">
+      <div className="border-b border-border-color bg-secondary-bg" data-testid="markdown-preview-container">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {title && (
@@ -119,16 +129,15 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({ content, title, githu
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-6 py-8 ">
         {viewMode === 'markdown' ? (
-          <div className="font-mono bg-secondary-bg rounded-lg p-6 text-editor-text whitespace-pre-wrap">
-            {content}
+          <div className="font-mono bg-secondary-bg rounded-lg p-6 text-editor-text whitespace-pre-wrap">{content}
           </div>
         ) : (
           <div className={`prose ${theme === 'light' ? 'prose-light' : 'prose-invert'} max-w-none`}>
-            <ReactMarkdown
+             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
-              components={renderers}
+               components={renderers}
             >
               {content}
             </ReactMarkdown>

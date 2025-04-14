@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Settings, Type, ZoomIn, Volume2 } from 'lucide-react';
 import { Switch } from '@headlessui/react';
 
@@ -24,15 +23,14 @@ const AccessibilityMenu: React.FC = () => {
   };
 
   return (
-    <div className="p-4 bg-secondary-bg rounded-lg shadow-lg space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-medium text-editor-text flex items-center">
+    <div className="p-2 space-y-3">
+      <div className="flex items-center">
+        <h2 className="font-medium text-editor-text flex items-center">
           <Settings size={20} className="mr-2 text-accent-blue" />
           Accessibility Options
         </h2>
       </div>
-
-      <div className="space-y-4">
+      <div className="space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Type size={16} className="text-accent-purple mr-2" />
@@ -41,7 +39,7 @@ const AccessibilityMenu: React.FC = () => {
           <Switch
             checked={highContrast}
             onChange={toggleHighContrast}
-            className={`${
+            className={`focus:outline-none ${
               highContrast ? 'bg-accent-blue' : 'bg-editor-bg'
             } relative inline-flex h-6 w-11 items-center rounded-full transition-colors`}
           >
@@ -62,7 +60,7 @@ const AccessibilityMenu: React.FC = () => {
           <Switch
             checked={largeText}
             onChange={toggleLargeText}
-            className={`${
+            className={`focus:outline-none ${
               largeText ? 'bg-accent-blue' : 'bg-editor-bg'
             } relative inline-flex h-6 w-11 items-center rounded-full transition-colors`}
           >
@@ -83,7 +81,7 @@ const AccessibilityMenu: React.FC = () => {
           <Switch
             checked={screenReader}
             onChange={toggleScreenReader}
-            className={`${
+            className={`focus:outline-none ${
               screenReader ? 'bg-accent-blue' : 'bg-editor-bg'
             } relative inline-flex h-6 w-11 items-center rounded-full transition-colors`}
           >

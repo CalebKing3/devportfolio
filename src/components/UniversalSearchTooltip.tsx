@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Command } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Command } from 'lucide-react';
 
 const UniversalSearchTooltip: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);

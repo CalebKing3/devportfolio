@@ -5,10 +5,10 @@
 @tailwind utilities;
 
 /* Base styles */
-body {
-  font-family: "JetBrains Mono", Menlo, Monaco, "Courier New", monospace;
-  background-color: var(--editor-bg);
-  color: var(--editor-text);
+body{
+  font-family: 'JetBrains Mono', monospace;
+  background-color: var(--primary-bg); /* Very dark gray for main background */
+  color: var(--text-color); /* Off-white/light gray text */
   transition: background-color 0.3s ease, color 0.3s ease;
   margin: 0;
   padding: 0;
@@ -28,6 +28,12 @@ html {
   transition-timing-function: ease;
 }
 
+.prose :where(pre code),.code-block,.ide-editor,.ide-bottom-panel,.ide-statusbar{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 /* IDE Window */
 .ide-window {
   display: grid;
@@ -35,19 +41,20 @@ html {
   min-height: 100vh;
   background-color: var(--editor-bg);
   overflow: hidden;
-  width: 100%;
+  width: 100vw;
   padding-bottom: calc(56px + var(--terminal-height, 200px)); /* Space for terminal + status bar */
 }
 
 /* Menu Bar - WebStorm style */
 .ide-menubar {
   background-color: var(--menu-bg);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--panel-border-color);
   padding: 0;
   user-select: none;
   height: 32px;
   display: flex;
   align-items: center;
+  font-size: 13px;
   justify-content: space-between;
   position: sticky;
   top: 0;
@@ -55,10 +62,10 @@ html {
 }
 
 .ide-menubar-item {
-  padding: 0.25rem 0.75rem;
-  color: var(--editor-text);
+  padding: 0.25rem 1rem;
+  color: var(--text-color);
   cursor: pointer;
-  font-size: 0.8125rem;
+  font-size: 13px;
   transition: background-color 0.2s;
   height: 100%;
   display: flex;
@@ -71,17 +78,17 @@ html {
 }
 
 .ide-menubar-item.active {
-  background-color: var(--selection-bg);
-  color: #fff;
+  background-color: var(--active-tab);
+  color: var(--active-text);
 }
 
 /* Top Toolbar - WebStorm style */
 .ide-toolbar {
   background-color: var(--secondary-bg);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--panel-border-color);
   padding: 0 8px;
   height: 28px;
-  display: flex;
+    display: flex;
   align-items: center;
   justify-content: space-between;
   user-select: none;
@@ -109,20 +116,20 @@ html {
 .ide-toolbar-separator {
   width: 1px;
   height: 16px;
-  background-color: var(--border-color);
+  background-color: var(--panel-border-color);
   margin: 0 6px;
 }
 
 .ide-toolbar-status {
   font-size: 11px;
-  color: var(--editor-text);
+  color: var(--text-color);
   opacity: 0.8;
   margin-left: 8px;
 }
 
 /* Sidebar - WebStorm style */
 .ide-sidebar {
-  background-color: var(--secondary-bg);
+  background-color: var(--panel-bg);
   border-right: 1px solid var(--border-color);
   transition: width 0.3s ease;
   overflow: hidden;
@@ -143,12 +150,12 @@ html {
   padding: 10px 12px;
   font-size: 11px;
   font-weight: 500;
-  color: var(--editor-text);
+  color: var(--text-color);
   opacity: 0.7;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   background-color: var(--secondary-bg);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--panel-border-color);
   height: 32px;
   display: flex;
   align-items: center;
@@ -159,7 +166,7 @@ html {
   display: flex;
   align-items: center;
   padding: 8px 12px;
-  color: var(--editor-text);
+  color: var(--text-color);
   cursor: pointer;
   font-size: 13px;
   transition: all 0.2s;
@@ -171,7 +178,7 @@ html {
 
 .ide-sidebar-item.active {
   background-color: var(--selection-bg);
-  color: #fff;
+  color: var(--active-text);
 }
 
 .ide-sidebar-item svg {
@@ -186,7 +193,6 @@ html {
   overflow: visible;
   height: 100%;
   padding-bottom: 32px;
-  position: relative;
   width: 100%;
   max-width: 100vw;
 }
@@ -196,31 +202,28 @@ html {
   background-color: var(--editor-bg);
   overflow: auto;
   padding: 0;
-  font-family: "JetBrains Mono", Menlo, Monaco, "Courier New", monospace;
-  line-height: 1.5;
-  display: flex;
+  color: var(--text-color);
   flex-direction: column;
   height: auto;
   min-height: 0;
   flex: 1;
   width: 100%;
+    border-left: 1px solid var(--panel-border-color);
 }
 
-.editor-content {
-  padding: 1rem;
-  font-size: 14px;
+.editor-content{
+  padding: 1rem 1.5rem;
   flex-grow: 1;
   overflow: auto;
-  max-height: none;
   height: auto;
 }
 
 /* WebStorm Code Editor */
 .code-block {
-  position: relative;
+   position: relative;
   margin: 0;
-  padding: 1rem 0 1rem 3.5rem;
-  background-color: var(--editor-bg);
+  padding: 1rem 0 1rem 3.65rem;
+  background-color: var(--code-bg);
   counter-reset: line;
   white-space: pre;
   font-family: "JetBrains Mono", Menlo, Monaco, "Courier New", monospace;
@@ -240,10 +243,10 @@ html {
   content: counter(line);
   position: absolute;
   left: -3rem;
-  width: 2.5rem;
+  width: 2.75rem;
   text-align: right;
   color: var(--line-number);
-  padding-right: 0.5rem;
+  padding-right: 0.75rem;
 }
 
 .code-block .line:hover {
@@ -257,24 +260,24 @@ html {
 /* Tabs - WebStorm style */
 .ide-tabs {
   display: flex;
-  background-color: var(--secondary-bg);
-  border-bottom: 1px solid var(--border-color);
+  background-color: var(--panel-bg);
+  border-bottom: 1px solid var(--panel-border-color);
   overflow-x: auto;
   user-select: none;
   height: 35px;
 }
 
 .ide-tab {
-  padding: 0 15px;
-  background-color: var(--secondary-bg);
+  padding: 0 16px;
   border-right: 1px solid var(--border-color);
   cursor: pointer;
-  color: var(--editor-text);
+  color: var(--text-color);
   opacity: 0.7;
   white-space: nowrap;
   display: flex;
   align-items: center;
   font-size: 13px;
+  min-width: 75px;
   height: 100%;
   position: relative;
 }
@@ -285,25 +288,25 @@ html {
 }
 
 .ide-tab.active {
-  background-color: var(--editor-bg);
+  background-color: var(--active-tab);
   opacity: 1;
   height: 36px; /* Makes the tab appear selected by extending 1px */
-  border-top: 2px solid var(--accent-blue);
+  border-top: 2px solid var(--accent-color);
+  color: var(--active-text);
   font-weight: 500;
 }
 
-/* Bottom Panel - WebStorm style */
-.ide-bottom-panel {
+/*Bottom Panel - WebStorm style*/
+.ide-bottom-panel,.ide-bottom-panel-container {
   background-color: var(--secondary-bg);
   border-top: 1px solid var(--border-color);
   overflow: hidden;
-  font-family: "JetBrains Mono", Menlo, Monaco, "Courier New", monospace;
   font-size: 12px;
 }
 
 .ide-bottom-panel-header {
   background-color: var(--secondary-bg);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--panel-border-color);
   display: flex;
   align-items: center;
   padding: 0 8px;
@@ -312,14 +315,13 @@ html {
 
 .ide-bottom-panel-content {
   padding: 8px;
-  overflow: auto;
+  overflow: hidden;
   height: calc(100% - 30px);
 }
 
 /* Bottom Panel - Fixed at bottom of viewport */
-.ide-bottom-panel-container {
+.ide-bottom-panel-container{
   background-color: var(--secondary-bg);
-  border-top: 1px solid var(--border-color);
   position: fixed;
   bottom: 24px; /* Accounts for status bar height */
   left: 0;
@@ -347,13 +349,13 @@ html {
 .ide-bottom-panel-handle:hover,
 .ide-bottom-panel-handle:active {
   background-color: var(--accent-blue);
-  opacity: 0.5;
+  opacity: 0.8;
 }
 
 .ide-bottom-panel-tabs {
   display: flex;
   align-items: center;
-  height: 32px;
+  height: 31px;
   padding-left: 12px;
   border-bottom: 1px solid var(--border-color);
   background-color: var(--secondary-bg);
@@ -382,9 +384,9 @@ html {
 }
 
 .ide-bottom-panel-tab.active {
-  background-color: var(--editor-bg);
+  background-color: var(--active-tab);
   opacity: 1;
-  border-top: 2px solid var(--accent-blue);
+  border-top: 2px solid var(--accent-color);
   font-weight: 500;
 }
 
@@ -402,18 +404,18 @@ html {
   opacity: 0.9;
   background-color: var(--active-tab);
 }
-
 .ide-bottom-panel-content {
-  height: calc(100% - 32px);
+  height: calc(100% - 31px);
   overflow: auto;
   position: relative;
+  border: 1px solid var(--panel-border-color);
   background-color: var(--editor-bg);
 }
 
 /* Status Bar - WebStorm style */
 .ide-statusbar {
   background-color: var(--statusbar-bg);
-  color: var(--editor-text);
+  color: var(--text-color);
   padding: 0;
   font-size: 11px;
   user-select: none;
@@ -421,7 +423,7 @@ html {
   align-items: center;
   justify-content: space-between;
   height: 24px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--panel-border-color);
   position: fixed;
   bottom: 0;
   left: 0;
@@ -430,13 +432,13 @@ html {
 }
 
 .ide-statusbar-item {
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
-  height: 100%;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-}
-
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    border-right: 1px solid var(--border-color);
+  }
+  
 .ide-statusbar-item:hover {
   background-color: rgba(255, 255, 255, 0.05);
 }
@@ -472,11 +474,11 @@ html {
 
 :root.light ::-webkit-scrollbar-thumb:hover {
   background: #868e96;
-}
+}+
 
 ::-webkit-scrollbar-corner {
   background: var(--secondary-bg);
-}
+}  
 
 /* Syntax highlighting - WebStorm style */
 .keyword {
@@ -521,10 +523,10 @@ html {
   background-color: var(--breadcrumbs-bg);
   padding: 4px 12px;
   font-size: 12px;
-  color: var(--editor-text);
+  color: var(--text-color);
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--panel-border-color);
   position: sticky;
   top: 0;
 }
@@ -537,13 +539,14 @@ html {
 .breadcrumb-item:not(:last-child)::after {
   content: "/";
   padding: 0 6px;
-  color: var(--editor-text);
+  color: var(--text-color);
   opacity: 0.5;
 }
 
 .gutter {
   background-color: var(--gutter-bg);
   padding-right: 10px;
+  text-align: right;
   border-right: 1px solid var(--border-color);
 }
 
@@ -580,7 +583,7 @@ html {
   padding: 2px 12px;
   cursor: pointer;
   transition: all 0.1s;
-  color: var(--editor-text);
+  color: var(--text-color);
 }
 
 .file-tree-item:hover {
@@ -589,11 +592,11 @@ html {
 
 .file-tree-item.active {
   background-color: var(--selection-bg);
-  color: #fff;
+  color: var(--active-text);
 }
 
 .folder-item {
-  color: var(--accent-yellow);
+  color: var(--accent-color);
   font-weight: normal;
 }
 
@@ -615,7 +618,7 @@ html {
 
 /* Copilot Sidebar Styles */
 .copilot-sidebar {
-  background-color: var(--secondary-bg);
+  background-color: var(--panel-bg);
   border-left: 1px solid var(--border-color);
   border-right: none;
   transition: width 0.3s ease;
@@ -642,7 +645,7 @@ html {
 .ide-tooltip {
   position: absolute;
   background-color: var(--secondary-bg);
-  color: var(--editor-text);
+  color: var(--text-color);
   padding: 0.5rem;
   border-radius: 0.25rem;
   font-size: 0.875rem;
@@ -652,26 +655,10 @@ html {
   white-space: nowrap;
 }
 
-/* Scrollbars */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+.ide-sidebar button{
+  color: var(--text-color);
 }
 
-::-webkit-scrollbar-track {
-  background: var(--secondary-bg);
-}
-
-::-webkit-scrollbar-thumb {
-  background: #5a5d63;
-  border: 3px solid var(--secondary-bg);
-  border-radius: 6px;
-}
-
-:root.light ::-webkit-scrollbar-thumb {
-  background: #adb5bd;
-  border: 3px solid var(--secondary-bg);
-}
 
 ::-webkit-scrollbar-thumb:hover {
   background: #6e7177;
@@ -717,7 +704,7 @@ html {
   top: 50%;
   transform: translateY(-50%);
   background-color: var(--secondary-bg);
-  color: var(--editor-text);
+  color: var(--text-color);
   padding: 0.5rem;
   border-radius: 0.25rem;
   font-size: 0.875rem;
@@ -733,7 +720,7 @@ html {
 }
 
 /* Cursor animation */
-@keyframes blink {
+@keyframes blink{
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
@@ -817,11 +804,20 @@ html {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: var(--editor-text);
+  color: var(--text-color);
   opacity: 0.7;
 }
 
 .ide-sidebar button:hover {
   background-color: var(--active-tab);
   opacity: 1;
+}
+
+/* Hide scrollbar on mobile menus */
+.ide-menubar {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.ide-menubar::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
 }

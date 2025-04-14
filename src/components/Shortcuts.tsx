@@ -1,8 +1,8 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Keyboard, Search, Terminal as TerminalIcon, Command, ChevronRight } from 'lucide-react';
+import { Keyboard } from 'lucide-react';
 
-const Shortcuts: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+
+const Shortcuts: React.FC = () => {
   const shortcuts = [
     {
       category: 'Navigation',
@@ -46,30 +46,26 @@ const Shortcuts: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
   ];
 
   return (
-    <div className="h-full overflow-auto p-6">
+    <div className="h-full overflow-auto p-4 bg-panel-bg rounded">
       <div className="space-y-8">
-        {shortcuts.map((category, index) => (
-          <motion.div
+        {shortcuts.map((category) => (
+          <div
             key={category.category}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <h3 className="text-accent-purple font-medium mb-4 flex items-center">
-              <ChevronRight size={16} className="mr-2" />
+            className="space-y-2">
+            <h3 className="text-editor-text font-medium text-sm flex items-center px-3 py-1">
+              <Keyboard size={14} className="mr-2 text-gray-400" />
               {category.category}
             </h3>
-            <div className="space-y-3">
+              <div className="space-y-1">
               {category.items.map((shortcut, itemIndex) => (
-                <motion.div
-                  key={itemIndex}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 + itemIndex * 0.05 }}
-                  className="flex items-center justify-between py-2 px-3 rounded hover:bg-active-tab group"
+                <div
+                  key={itemIndex} 
+                  className="flex items-center justify-between py-1 px-3 rounded group hover:bg-hover-bg transition-colors"
                 >
-                  <div className="flex items-center space-x-2 text-editor-text">
-                    <div className="flex items-center space-x-1.5">
+                  <div className="flex items-center space-x-2">
+                  
+                    <div className="flex items-center space-x-1">
+
                       {Array.isArray(shortcut.keys) ? (
                         shortcut.keys.map((key, keyIndex) => (
                           <React.Fragment key={keyIndex}>
@@ -84,17 +80,17 @@ const Shortcuts: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
                           {shortcut.keys}
                         </code>
                       )}
-                    </div>
+                    </div> 
                   </div>
-                  <span className="text-sm text-editor-text opacity-70 group-hover:opacity-100">
+                  <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                     {shortcut.description}
                   </span>
-                </motion.div>
+                  </div>
               ))}
             </div>
-          </motion.div>
+          </div>
         ))}
-      </div>
+          </div>
     </div>
   );
 };

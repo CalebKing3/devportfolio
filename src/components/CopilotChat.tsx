@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Bot, ChevronRight, MessageSquare, MessagesSquare, Search, RefreshCw } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface ChatMessage {
   type: 'bot' | 'option';
@@ -8,7 +8,6 @@ interface ChatMessage {
 }
 
 interface CopilotChatProps {
-  isOpen: boolean;
   onClose: () => void;
 }
 
@@ -20,7 +19,7 @@ const funFacts = [
   "I can provide context-aware suggestions based on your codebase."
 ];
 
-const CopilotChat: React.FC<CopilotChatProps> = ({ isOpen }) => {
+const CopilotChat: React.FC<CopilotChatProps> = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [showOptions, setShowOptions] = useState(false);
   const [currentFactIndex, setCurrentFactIndex] = useState(0);

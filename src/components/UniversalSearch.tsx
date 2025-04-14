@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, File, User, FolderGit2, FileText, Mail, X, Command } from 'lucide-react';
+import React, { useState, useEffect, useRef, KeyboardEvent } from 'react';
+import { Search, File, User, FolderGit2, FileText, Mail, X, Command} from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 interface SearchResult {
@@ -13,7 +13,7 @@ interface SearchResult {
 const UniversalSearch: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -50,26 +50,25 @@ const UniversalSearch: React.FC = () => {
     }
   ];
 
-  const filteredResults = searchResults.filter(
-    result => 
+  const filteredResults = searchResults.filter((result: SearchResult) =>
       result.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       result.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+        
       // Open search with double Shift
-      if (e.key === 'Shift') {
+      if (event.key === 'Shift') {
         const now = Date.now();
-        if (now - (window as any).lastShiftPress < 500) {
+        if (now - (window as { lastShiftPress?: number }).lastShiftPress < 500) {
           setIsOpen(true);
-          e.preventDefault();
         }
-        (window as any).lastShiftPress = now;
-      }
+        (window as { lastShiftPress?: number }).lastShiftPress = now;
+      } 
 
       // Close with Escape
-      if (e.key === 'Escape' && isOpen) {
+      if (event.key === 'Escape' && isOpen) {
         setIsOpen(false);
       }
     };
@@ -77,10 +76,10 @@ const UniversalSearch: React.FC = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen]);
-
+  
   useEffect(() => {
     if (isOpen) {
-      inputRef.current?.focus();
+        inputRef.current?.focus();
     }
   }, [isOpen]);
 
@@ -88,8 +87,8 @@ const UniversalSearch: React.FC = () => {
     setSelectedIndex(0);
   }, [searchTerm]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowDown') {
+  const handleInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowDown' ) {
       e.preventDefault();
       setSelectedIndex(prev => 
         prev < filteredResults.length - 1 ? prev + 1 : prev
@@ -103,54 +102,52 @@ const UniversalSearch: React.FC = () => {
     }
   };
 
+  const handleClickOutside = () => {
+    setIsOpen(false);
+  };
+
   if (!isOpen) return null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <div
       className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center pt-[20vh] z-50"
-      onClick={() => setIsOpen(false)}
+      onClick={handleClickOutside}
     >
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
-        className="w-full max-w-xl bg-editor-bg rounded-lg shadow-lg overflow-hidden border border-border-color"
+      <div
+        className="w-full max-w-xl bg-editor-bg rounded-md shadow-lg overflow-hidden border border-border-color relative"
         onClick={e => e.stopPropagation()}
       >
         {/* Search Header */}
-        <div className="bg-secondary-bg border-b border-border-color p-2">
-          <div className="flex items-center">
-            <Command size={16} className="text-accent-blue mr-2" />
-            <span className="text-sm text-editor-text">Search</span>
+        <div className="bg-secondary-bg border-b border-border-color p-3">
+          <div className="flex items-center space-x-2">
+            <Command size={14} className="text-accent-blue" />
+            <span className="text-sm text-editor-text opacity-70">Search</span>
           </div>
         </div>
 
         {/* Search Input */}
-        <div className="flex items-center p-4 border-b border-border-color">
-          <Search size={20} className="text-editor-text opacity-50 mr-3" />
+        <div className="flex items-center p-3 border-b border-border-color">
+          <Search size={16} className="text-editor-text opacity-50 mr-3" />
           <input
             ref={inputRef}
             type="text"
             placeholder="Search pages..."
-            value={searchTerm}
+             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent border-none outline-none text-editor-text placeholder-editor-text/50"
+             onKeyDown={handleInputKeyDown}
+            className="flex-1 bg-transparent border-none outline-none text-editor-text placeholder-editor-text/50 text-sm"
             autoFocus
           />
           <button
             onClick={() => setIsOpen(false)}
-            className="p-1 hover:bg-active-tab rounded transition-colors"
+            className="p-1 hover:bg-active-tab rounded-sm transition-colors"
           >
-            <X size={20} className="text-editor-text opacity-50" />
+            <X size={16} className="text-editor-text opacity-50" />
           </button>
         </div>
 
         {/* Search Results */}
-        <div className="max-h-[60vh] overflow-auto">
+        <div className="max-h-[40vh] overflow-auto">
           {filteredResults.length > 0 ? (
             <div className="py-2">
               {filteredResults.map((result, index) => (
@@ -158,7 +155,7 @@ const UniversalSearch: React.FC = () => {
                   key={result.path}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
+                  transition={{ duration: 0.1, delay: index * 0.05 }}
                   className={`px-4 py-3 cursor-pointer flex items-start space-x-3 ${
                     selectedIndex === index ? 'bg-selection-bg' : 'hover:bg-active-tab'
                   }`}
@@ -193,16 +190,16 @@ const UniversalSearch: React.FC = () => {
         {/* Search Footer */}
         <div className="bg-secondary-bg border-t border-border-color p-2">
           <div className="flex items-center justify-between text-xs text-editor-text opacity-70">
-            <div className="flex items-center space-x-4">
-              <span>↑↓ to navigate</span>
-              <span>↵ to select</span>
-              <span>esc to close</span>
+            <div className="flex items-center space-x-2">
+              <span>↑↓ navigate</span>
+              <span>↵ select</span>
+              <span>esc close</span>
             </div>
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
-};
+}
 
 export default UniversalSearch;

@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Save, X, Eye, Code, FileText } from 'lucide-react';
-import Editor from '@monaco-editor/react';
-import MarkdownPreview from './MarkdownPreview';
-import { useTheme } from '../hooks/useTheme';
 
 interface BlogEditorProps {
   isOpen: boolean;
@@ -11,6 +8,10 @@ interface BlogEditorProps {
   onSave: (content: string) => void;
   initialContent?: string;
 }
+const MonacoEditor = lazy(() => import('@monaco-editor/react'));
+
+// Lazy load the MarkdownPreview component
+const MarkdownPreview = lazy(() => import('./MarkdownPreview'));
 
 const BlogEditor: React.FC<BlogEditorProps> = ({
   isOpen,
@@ -19,9 +20,12 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
   initialContent = ''
 }) => {
   const [content, setContent] = useState(initialContent);
-  const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit');
-  const { theme } = useTheme();
-
+    const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit');
+    const handleContentChange = (
+      value: string | undefined,
+    ) => {
+      setContent(value || '');
+    };
   const handleSave = () => {
     onSave(content);
     onClose();
@@ -84,25 +88,23 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
         {/* Editor/Preview */}
         <div className="flex-1 overflow-hidden">
           {viewMode === 'edit' ? (
-            <Editor
-              height="100%"
-              defaultLanguage="markdown"
-              theme={theme === 'dark' ? 'vs-dark' : 'light'}
-              value={content}
-              onChange={value => setContent(value || '')}
-              options={{
-                minimap: { enabled: false },
-                fontSize: 14,
-                lineNumbers: 'on',
-                wordWrap: 'on',
-                scrollBeyondLastLine: false,
-                automaticLayout: true,
-              }}
-            />
+            <Suspense
+              fallback={<div className="w-full h-full p-4 text-editor-text bg-editor-bg outline-none">Loading editor...</div>}
+            >
+              <MonacoEditor
+                theme="vs-dark"
+                height="100%"
+                language="markdown"
+                value={content}
+                onChange={handleContentChange}
+              />
+            </Suspense>
           ) : (
-            <div className="h-full overflow-auto">
-              <MarkdownPreview content={content} />
-            </div>
+            <Suspense
+              fallback={<div className="w-full h-full p-4 text-editor-text bg-editor-bg">Loading preview...</div>}
+            >
+              <MarkdownPreview className="h-full overflow-auto" content={content} />
+            </Suspense>
           )}
         </div>
       </motion.div>

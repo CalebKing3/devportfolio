@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -16,11 +15,10 @@ interface TableOfContentsItem {
 }
 
 const ArticleView: React.FC<{ post: Post }> = ({ post }) => {
-  const navigate = useNavigate();
   const [tableOfContents, setTableOfContents] = useState<TableOfContentsItem[]>([]);
   const [activeSection, setActiveSection] = useState<string>('');
 
-  useEffect(() => {
+    useEffect(() => {
     // Extract headings from content for table of contents
     const headings = post.content.match(/#{1,3} .+/g) || [];
     const toc = headings.map((heading) => {
@@ -43,19 +41,26 @@ const ArticleView: React.FC<{ post: Post }> = ({ post }) => {
         });
       },
       { threshold: 0.5 }
-    );
+    ) as IntersectionObserver;
 
     tableOfContents.forEach(({ id }) => {
-      const element = document.getElementById(id);
-      if (element) observer.observe(element);
+      const element = document.getElementById(id)
+        if (element) {
+          observer.observe(element);
+        }
     });
 
     return () => observer.disconnect();
-  }, [tableOfContents]);
+    }, [tableOfContents]);
 
   const renderers = {
-    code({ node, inline, className, children, ...props }: any) {
+    code({ inline, className, children, ...props }: { inline: boolean, className: string, children: string | string[] }) {
+      
       const match = /language-(\w+)/.exec(className || '');
+      
+      if (!match) {
+          return <code className={className} {...props}>{children}</code>;
+      }
       return !inline && match ? (
         <SyntaxHighlighter
           style={atomOneDark}
@@ -71,21 +76,18 @@ const ArticleView: React.FC<{ post: Post }> = ({ post }) => {
           {String(children).replace(/\n$/, '')}
         </SyntaxHighlighter>
       ) : (
-        <code className={className} {...props}>
-          {children}
-        </code>
+          <code className={className} {...props}>{children}</code>
       );
     },
-    // Add custom heading renderer to include IDs for navigation
-    h1: ({ children }: any) => {
+    h1: ({ children }: { children: React.ReactNode }) => {
       const id = String(children).toLowerCase().replace(/[^\w]+/g, '-');
       return <h1 id={id} className="text-4xl font-bold mb-6 text-accent-blue">{children}</h1>;
     },
-    h2: ({ children }: any) => {
+    h2: ({ children }: { children: React.ReactNode }) => {
       const id = String(children).toLowerCase().replace(/[^\w]+/g, '-');
-      return <h2 id={id} className="text-3xl font-bold mt-12 mb-4 text-accent-purple">{children}</h2>;
+      return <h2 id={id} className="text-3xl font-bold mt-12 mb-4 text-accent-purple">{children}</h2>
     },
-    h3: ({ children }: any) => {
+    h3: ({ children }: { children: React.ReactNode}): JSX.Element => {
       const id = String(children).toLowerCase().replace(/[^\w]+/g, '-');
       return <h3 id={id} className="text-2xl font-bold mt-8 mb-4">{children}</h3>;
     },
@@ -100,7 +102,7 @@ const ArticleView: React.FC<{ post: Post }> = ({ post }) => {
     >
       {/* Back Button */}
       <button
-        onClick={() => navigate('/articles')}
+        onClick={() => window.history.back()}
         className="flex items-center text-editor-text hover:text-accent-blue mb-8"
       >
         <ArrowLeft size={20} className="mr-2" />
@@ -150,9 +152,9 @@ const ArticleView: React.FC<{ post: Post }> = ({ post }) => {
                     href={`#${item.id}`}
                     className={`block text-sm hover:text-accent-blue transition-colors ${
                       activeSection === item.id ? 'text-accent-blue' : 'text-editor-text'
-                    }`}
-                    style={{ paddingLeft: `${(item.level - 1) * 1}rem` }}
-                  >
+                      }`}
+                      style={{ paddingLeft: `${(item.level - 1) * 1}rem` }}
+                    >
                     {item.title}
                   </a>
                 ))}

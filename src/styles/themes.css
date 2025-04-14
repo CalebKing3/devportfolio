@@ -1,22 +1,24 @@
 :root {
   /* Dark theme colors - WebStorm inspired */
-  --dark-editor-bg: #1e1f22;
-  --dark-editor-text: #a9b7c6;
-  --dark-secondary-bg: #2b2d30;
-  --dark-border-color: #323232;
-  --dark-active-tab: #323232;
-  --dark-menu-bg: #3c3f41;
-  --dark-statusbar-bg: #27282b;
-  --dark-selection-bg: #214283;
-  --dark-line-number: #606366;
-  --dark-line-number-active: #a4a3a3;
-  --dark-gutter-bg: #313335;
-  --dark-breadcrumbs-bg: #27292b;
+  --dark-editor-bg: #2b2b2b; /* Very dark gray for the main editor */
+  --dark-app-bg: #2b2b2b; /* Very dark gray for the main background */
+  --dark-editor-text: #dcdcdc; /* Off-white/light gray for main text */
+  --dark-secondary-bg: #3c3f41; /* Slightly lighter gray for panels */
+  --dark-border-color: #4b4b4b; /* Dark gray for borders */
+  --dark-active-tab: #4b4b4b; /* Darker gray for active tabs */
+  --dark-menu-bg: #3c3f41; /* Slightly lighter gray for menus */
+  --dark-statusbar-bg: #3c3f41; /* Slightly lighter gray for status bar */
+  --dark-selection-bg: #385ca8; /* Darker blue for selections */
+  --dark-line-number: #6d6d6d; /* Dark gray for line numbers */
+  --dark-line-number-active: #dcdcdc; /* Light gray for active line numbers */
+  --dark-gutter-bg: #3c3f41; /* Background of the gutter area */
+  --dark-breadcrumbs-bg: #3c3f41; /* Background of the breadcrumbs area */
   
   /* Light theme colors */
+  --light-app-bg: #ffffff;
   --light-editor-bg: #ffffff;
   --light-editor-text: #2c3e50;
-  --light-secondary-bg: #f7f7f7;
+  --light-secondary-bg: #f0f0f0;
   --light-border-color: #e6e6e6;
   --light-active-tab: #ffffff;
   --light-menu-bg: #ececec;
@@ -24,7 +26,7 @@
   --light-selection-bg: #c2dbff;
   --light-line-number: #adb5bd;
   --light-line-number-active: #6c757d;
-  --light-gutter-bg: #f0f0f0;
+  --light-gutter-bg: #e9e9e9;
   --light-breadcrumbs-bg: #f5f5f5;
   
   /* WebStorm accent colors */
@@ -43,17 +45,17 @@
   --light-accent-red: #cf0000;
   
   /* Syntax highlighting - Dark WebStorm */
-  --dark-keyword-color: #cc7832;
-  --dark-string-color: #6a8759;
-  --dark-comment-color: #808080;
-  --dark-number-color: #6897bb;
-  --dark-type-color: #ffc66d;
-  --dark-method-color: #ffc66d;
-  --dark-class-color: #a9b7c6;
-  --dark-function-color: #a9b7c6;
-  --dark-constant-color: #9876aa;
+  --dark-keyword-color: #cc7832; /* Orange for keywords */
+  --dark-string-color: #6a8759; /* Green for strings */
+  --dark-comment-color: #808080; /* Gray for comments */
+  --dark-number-color: #6897bb; /* Blue for numbers */
+  --dark-type-color: #ffc66d; /* Yellow for types */
+  --dark-method-color: #ffc66d; /* Yellow for methods */
+  --dark-class-color: #a9b7c6; /* Light gray for classes */
+  --dark-function-color: #a9b7c6; /* Light gray for functions */
+  --dark-constant-color: #9876aa; /* Purple for constants */
   
-  /* Syntax highlighting - Light */
+  /* Syntax highlighting - Light WebStorm */
   --light-keyword-color: #0033b3;
   --light-string-color: #008000;
   --light-comment-color: #8c8c8c;
@@ -68,6 +70,7 @@
 /* Dark theme (default) */
 :root {
   /* Base colors */
+  --app-bg: var(--dark-app-bg);
   --editor-bg: var(--dark-editor-bg);
   --editor-text: var(--dark-editor-text);
   --secondary-bg: var(--dark-secondary-bg);
@@ -104,6 +107,7 @@
 /* Light theme */
 :root.light {
   /* Base colors */
+  --app-bg: var(--light-app-bg);
   --editor-bg: var(--light-editor-bg);
   --editor-text: var(--light-editor-text);
   --secondary-bg: var(--light-secondary-bg);
@@ -165,4 +169,21 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+/* Apply monospace font to code and pre elements */
+code, pre {
+  font-family: 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
+  font-size: 14px; /* Adjust as needed */
+}
+/* Global styles */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--app-bg);
+  color: var(--editor-text);
+}
+
+code, pre {
+  font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+  font-size: 14px;
 }

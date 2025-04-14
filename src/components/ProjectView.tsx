@@ -1,74 +1,33 @@
 import React from 'react';
-import { Folder, FileType, Code } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import projectsData from '../data/projects';
 
-interface FileTreeItem {
-  type: 'folder' | 'file';
-  icon: React.ReactNode;
-  children?: Record<string, FileTreeItem>;
+interface Project {
+  name: string;
+  slug: string;
+  description: string;
+  technologies: string[];
 }
 
-interface ProjectViewProps {
-  fileTree: Record<string, FileTreeItem>;
-  expandedFolders: Set<string>;
-  toggleFolder: (path: string) => void;
-  isSidebarOpen: boolean;
-}
-
-const ProjectView: React.FC<ProjectViewProps> = ({ 
-  fileTree, 
-  expandedFolders, 
-  toggleFolder,
-  isSidebarOpen 
-}) => {
-  const renderFileTree = (tree: Record<string, FileTreeItem>, path = '') => {
-    return Object.entries(tree).map(([name, item]) => {
-      const currentPath = path ? `${path}/${name}` : name;
-      const isExpanded = expandedFolders.has(currentPath);
-      
-      if (item.type === 'folder') {
-        return (
-          <div key={currentPath}>
-            <div 
-              className="file-tree-item flex items-center"
-              onClick={() => toggleFolder(currentPath)}
-              style={{ paddingLeft: isSidebarOpen ? `${path.split('/').length * 1}rem` : '0.5rem' }}
-            >
-              <span className={isSidebarOpen ? '' : 'mx-auto'}>{item.icon}</span>
-              {isSidebarOpen && <span className="ml-2 truncate">{name}</span>}
-            </div>
-            <AnimatePresence>
-              {isExpanded && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  className="folder-content"
-                >
-                  {item.children && renderFileTree(item.children, currentPath)}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        );
-      }
-
-      return (
-        <div
-          key={currentPath}
-          className="file-tree-item flex items-center"
-          style={{ paddingLeft: isSidebarOpen ? `${(path.split('/').length + 1) * 1}rem` : '0.5rem' }}
-        >
-          <span className={isSidebarOpen ? '' : 'mx-auto'}>{item.icon}</span>
-          {isSidebarOpen && <span className="ml-2 truncate">{name}</span>}
-        </div>
-      );
-    });
-  };
-
+const ProjectView: React.FC = () => {
   return (
-    <div className="file-tree p-2">
-      {renderFileTree(fileTree)}
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-8 text-white">Projects</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projectsData.map((project: Project) => (
+          <Link key={project.slug} to={`/projects/${project.slug}`}>
+            <div className="bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 ease-in-out">
+              <h3 className="text-lg font-semibold text-white mb-2">{project.name}</h3>
+              <p className="text-sm text-gray-400 mb-4">{project.description}</p>
+              <div className="flex flex-wrap gap-2">
+                {project.technologies.map((tech, index) => (
+                  <span key={index} className="bg-gray-700 text-gray-300 px-2 py-1 rounded-md text-xs">{tech}</span>
+                ))}
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };

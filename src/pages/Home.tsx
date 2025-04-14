@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import remarkGfm, { type Root } from 'remark-gfm';
 import { Eye, Code, Copy, ExternalLink } from 'lucide-react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
@@ -12,6 +11,11 @@ const Home = () => {
 
   const markdownContent = `# Caleb King 👨‍💻
 ## Director of Engineering
+
+<div align="center">
+    <img src="https://i.imgur.com/dBAa38d.png" alt="Caleb King profile picture" loading="lazy" width="200" />
+</div>
+
 
 Experienced engineering leader with a proven track record of building and scaling high-performance development teams. Passionate about fostering innovation, implementing efficient development processes, and delivering exceptional software solutions.
 
@@ -121,6 +125,10 @@ const calebKing: EngineeringDirector = {
 
 \`\`\`mermaid
 graph TD
+    
+    style A fill:#4a9eff,stroke:#333,stroke-width:2px
+    style B fill:#b39ddb,stroke:#333,stroke-width:2px
+    style C fill:#67c23a,stroke:#333,stroke-width:2px
     A[Technical Vision] --> B[Team Empowerment]
     B --> C[Process Optimization]
     C --> D[Continuous Innovation]
@@ -131,6 +139,12 @@ graph TD
     style C fill:#67c23a,stroke:#333,stroke-width:2px
     style D fill:#cc7832,stroke:#333,stroke-width:2px
 \`\`\`
+
+<div align="center">
+    <img src="https://i.imgur.com/X5yY5T9.png" alt="Microservices Architecture" loading="lazy" width="400" />
+</div>
+
+
 
 ## 🎯 Current Focus
 
@@ -172,7 +186,7 @@ Looking to collaborate or discuss engineering leadership? Feel free to reach out
   };
 
   const renderers = {
-    code({ node, inline, className, children, ...props }: any) {
+    code({ inline, className, children, ...props }: { inline?: boolean; className?: string; children?: string[]; node: Root; }) {
       const match = /language-(\w+)/.exec(className || '');
       return !inline && match ? (
         <SyntaxHighlighter
@@ -186,7 +200,7 @@ Looking to collaborate or discuss engineering leadership? Feel free to reach out
           }}
           {...props}
         >
-          {String(children).replace(/\n$/, '')}
+          {String(children?.[0]).replace(/\n$/, '')}
         </SyntaxHighlighter>
       ) : (
         <code className={className} {...props}>
@@ -253,12 +267,7 @@ Looking to collaborate or discuss engineering leadership? Feel free to reach out
           </div>
         </div>
       </div>
-
-      {/* Content */}
-      <motion.div
-        key={viewMode}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className="max-w-4xl mx-auto px-6 py-8"
       >
         {viewMode === 'markdown' ? (
@@ -275,7 +284,7 @@ Looking to collaborate or discuss engineering leadership? Feel free to reach out
             </ReactMarkdown>
           </div>
         )}
-      </motion.div>
+      </div>
     </div>
   );
 };
