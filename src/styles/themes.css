@@ -1,20 +1,20 @@
 :root {
-  /* Dark theme colors - WebStorm inspired */
-  --dark-editor-bg: #2b2b2b; /* Very dark gray for the main editor */
-  --dark-app-bg: #2b2b2b; /* Very dark gray for the main background */
-  --dark-editor-text: #dcdcdc; /* Off-white/light gray for main text */
-  --dark-secondary-bg: #3c3f41; /* Slightly lighter gray for panels */
-  --dark-border-color: #4b4b4b; /* Dark gray for borders */
-  --dark-active-tab: #4b4b4b; /* Darker gray for active tabs */
-  --dark-menu-bg: #3c3f41; /* Slightly lighter gray for menus */
-  --dark-statusbar-bg: #3c3f41; /* Slightly lighter gray for status bar */
-  --dark-selection-bg: #385ca8; /* Darker blue for selections */
-  --dark-line-number: #6d6d6d; /* Dark gray for line numbers */
-  --dark-line-number-active: #dcdcdc; /* Light gray for active line numbers */
-  --dark-gutter-bg: #3c3f41; /* Background of the gutter area */
-  --dark-breadcrumbs-bg: #3c3f41; /* Background of the breadcrumbs area */
-  
-  /* Light theme colors */
+  /* Dark theme colors - Closer to WebStorm Darcula */
+  --dark-app-bg: #2b2b2b;         /* Main background */
+  --dark-editor-bg: #2b2b2b;      /* Editor background */
+  --dark-editor-text: #dcdcdc;     /* <<<<< UPDATED: Brighter off-white text */
+  --dark-secondary-bg: #3c3f41;  /* Sidebars, panels */
+  --dark-border-color: #323232;   /* Subtle borders */
+  --dark-active-tab: #313335;      /* Active tab background */
+  --dark-menu-bg: #3c3f41;       /* Menubar background */
+  --dark-statusbar-bg: #3c3f41;  /* Status bar background */
+  --dark-selection-bg: #214283;  /* Selection background (darker blue) */
+  --dark-line-number: #606366;   /* Line numbers */
+  --dark-line-number-active: #a9b7c6; /* Active line number */
+  --dark-gutter-bg: #313335;      /* Gutter background */
+  --dark-breadcrumbs-bg: #3c3f41; /* Breadcrumbs background */
+
+  /* Light theme colors (keeping existing for now) */
   --light-app-bg: #ffffff;
   --light-editor-bg: #ffffff;
   --light-editor-text: #2c3e50;
@@ -28,33 +28,33 @@
   --light-line-number-active: #6c757d;
   --light-gutter-bg: #e9e9e9;
   --light-breadcrumbs-bg: #f5f5f5;
-  
-  /* WebStorm accent colors */
-  --dark-accent-blue: #4a9eff;
-  --dark-accent-purple: #9876aa;
-  --dark-accent-green: #6a8759;
-  --dark-accent-orange: #cc7832;
-  --dark-accent-yellow: #ffc66d;
-  --dark-accent-red: #ff5647;
-  
+
+  /* WebStorm accent colors (adjusting dark ones slightly) */
+  --dark-accent-blue: #4a90e2;   /* General blue accent */
+  --dark-accent-purple: #9876aa; /* Purple */
+  --dark-accent-green: #6a8759;  /* Green */
+  --dark-accent-orange: #cc7832; /* Orange */
+  --dark-accent-yellow: #ffc66d; /* Yellow */
+  --dark-accent-red: #d1494a;    /* Red */
+
   --light-accent-blue: #0066bf;
   --light-accent-purple: #7a3e9d;
   --light-accent-green: #008000;
   --light-accent-orange: #b75400;
   --light-accent-yellow: #bb8400;
   --light-accent-red: #cf0000;
-  
-  /* Syntax highlighting - Dark WebStorm */
+
+  /* Syntax highlighting - Dark WebStorm Darcula */
   --dark-keyword-color: #cc7832; /* Orange for keywords */
-  --dark-string-color: #6a8759; /* Green for strings */
-  --dark-comment-color: #808080; /* Gray for comments */
-  --dark-number-color: #6897bb; /* Blue for numbers */
-  --dark-type-color: #ffc66d; /* Yellow for types */
-  --dark-method-color: #ffc66d; /* Yellow for methods */
+  --dark-string-color: #6a8759;  /* Green for strings */
+  --dark-comment-color: #808080;  /* Gray for comments */
+  --dark-number-color: #6897bb;  /* Blue for numbers */
+  --dark-type-color: #a9b7c6;   /* Light gray for types */
+  --dark-method-color: #ffc66d; /* Yellow for methods/functions */
   --dark-class-color: #a9b7c6; /* Light gray for classes */
-  --dark-function-color: #a9b7c6; /* Light gray for functions */
+  --dark-function-color: #ffc66d; /* Yellow for functions */
   --dark-constant-color: #9876aa; /* Purple for constants */
-  
+
   /* Syntax highlighting - Light WebStorm */
   --light-keyword-color: #0033b3;
   --light-string-color: #008000;
@@ -83,7 +83,7 @@
   --line-number-active: var(--dark-line-number-active);
   --gutter-bg: var(--dark-gutter-bg);
   --breadcrumbs-bg: var(--dark-breadcrumbs-bg);
-  
+
   /* Accent colors */
   --accent-blue: var(--dark-accent-blue);
   --accent-purple: var(--dark-accent-purple);
@@ -91,7 +91,7 @@
   --accent-orange: var(--dark-accent-orange);
   --accent-yellow: var(--dark-accent-yellow);
   --accent-red: var(--dark-accent-red);
-  
+
   /* Syntax highlighting */
   --keyword-color: var(--dark-keyword-color);
   --string-color: var(--dark-string-color);
@@ -120,7 +120,7 @@
   --line-number-active: var(--light-line-number-active);
   --gutter-bg: var(--light-gutter-bg);
   --breadcrumbs-bg: var(--light-breadcrumbs-bg);
-  
+
   /* Accent colors */
   --accent-blue: var(--light-accent-blue);
   --accent-purple: var(--light-accent-purple);
@@ -128,7 +128,7 @@
   --accent-orange: var(--light-accent-orange);
   --accent-yellow: var(--light-accent-yellow);
   --accent-red: var(--light-accent-red);
-  
+
   /* Syntax highlighting */
   --keyword-color: var(--light-keyword-color);
   --string-color: var(--light-string-color);
@@ -141,7 +141,7 @@
   --constant-color: var(--light-constant-color);
 }
 
-/* High contrast mode */
+/* High contrast mode (keeping existing) */
 :root.high-contrast {
   --editor-text: #ffffff;
   --accent-blue: #00b7ff;
@@ -150,15 +150,15 @@
   --accent-orange: #ff8000;
 }
 
-/* Large text mode */
+/* Large text mode (keeping existing) */
 :root.large-text {
   font-size: 18px;
 }
 
 /* Accessibility focus styles */
 *:focus-visible {
-  outline: 3px solid var(--accent-blue);
-  outline-offset: 2px;
+  outline: 2px solid var(--accent-blue); /* Slightly thinner outline */
+  outline-offset: 1px;
 }
 
 /* Reduced motion */
@@ -172,8 +172,8 @@
 }
 /* Apply monospace font to code and pre elements */
 code, pre {
-  font-family: 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
-  font-size: 14px; /* Adjust as needed */
+  font-family: 'JetBrains Mono', 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace; /* Prioritize JetBrains Mono */
+  font-size: 13px; /* Common IDE font size */
 }
 /* Global styles */
 body {
@@ -181,9 +181,15 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   background-color: var(--app-bg);
   color: var(--editor-text);
+  font-size: 13px; /* Match code font size for consistency */
 }
 
 code, pre {
-  font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
-  font-size: 14px;
+  font-family: 'JetBrains Mono', 'Menlo', 'Monaco', 'Consolas', monospace; /* Prioritize JetBrains Mono */
+  font-size: 13px; /* Common IDE font size */
+}
+
+/* Ensure main window takes full height */
+html, body, #root {
+  height: 100%;
 }

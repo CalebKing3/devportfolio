@@ -5,92 +5,106 @@
 @tailwind utilities;
 
 /* Base styles */
-body{
-  font-family: 'JetBrains Mono', monospace;
-  background-color: var(--primary-bg); /* Very dark gray for main background */
-  color: var(--text-color); /* Off-white/light gray text */
-  transition: background-color 0.3s ease, color 0.3s ease;
+html, body, #root {
+  height: 100%;
+  overflow: hidden; /* Prevent body scroll */
   margin: 0;
   padding: 0;
-  overflow: auto; /* Changed from hidden to auto */
-  height: 100%;
 }
 
-html {
-  height: 100%;
-  overflow: auto; /* Added overflow auto */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--app-bg);
+  color: var(--editor-text); /* Use the updated editor text color */
+  font-size: 13px; /* Base font size like IDE */
+  line-height: 1.4; /* Slightly tighter line height */
 }
 
-/* Add a transition to all elements that might change color with theme */
-* {
-  transition-property: background-color, border-color, color, fill, stroke;
-  transition-duration: 0.3s;
-  transition-timing-function: ease;
-}
-
-.prose :where(pre code),.code-block,.ide-editor,.ide-bottom-panel,.ide-statusbar{
-  font-family: 'JetBrains Mono', monospace;
+/* Use JetBrains Mono for code/pre and specific IDE elements */
+code, pre, .ide-editor, .ide-bottom-panel, .ide-statusbar, .file-tree {
+  font-family: 'JetBrains Mono', 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
   font-size: 13px;
   line-height: 1.5;
 }
 
-/* IDE Window */
-.ide-window {
-  display: grid;
-  grid-template-rows: auto auto 1fr auto;
-  min-height: 100vh;
-  background-color: var(--editor-bg);
-  overflow: hidden;
-  width: 100vw;
-  padding-bottom: calc(56px + var(--terminal-height, 200px)); /* Space for terminal + status bar */
+/* Smooth transitions for theme changes */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 0.15s; /* Faster transition */
+  transition-timing-function: ease;
 }
 
-/* Menu Bar - WebStorm style */
+/* IDE Window Layout */
+.ide-window {
+  display: flex; /* Use flexbox for overall structure */
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+  overflow: hidden; /* Prevent scrolling on the main container */
+  background-color: var(--app-bg);
+}
+
+/* Header Area (Menubar + Toolbar + Breadcrumbs) */
+.ide-header-area {
+  flex-shrink: 0; /* Prevent shrinking */
+  position: sticky; /* Make header sticky if needed */
+  top: 0;
+  z-index: 20; /* Ensure header is above content */
+}
+
+/* Menu Bar - Compact */
 .ide-menubar {
   background-color: var(--menu-bg);
-  border-bottom: 1px solid var(--panel-border-color);
-  padding: 0;
-  user-select: none;
-  height: 32px;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 8px; /* Reduced padding */
+  height: 30px; /* Compact height */
   display: flex;
   align-items: center;
   font-size: 13px;
   justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  user-select: none;
 }
 
 .ide-menubar-item {
-  padding: 0.25rem 1rem;
-  color: var(--text-color);
+  padding: 0 12px; /* Adjusted padding */
+  color: var(--editor-text);
   cursor: pointer;
-  font-size: 13px;
-  transition: background-color 0.2s;
+  transition: background-color 0.1s;
   height: 100%;
   display: flex;
   align-items: center;
   text-decoration: none;
+  border: 1px solid transparent; /* For hover/active state */
+  border-bottom: none;
+  margin-right: 2px;
 }
-
+.ide-menubar-item svg {
+  width: 14px; /* Slightly smaller icons */
+  height: 14px;
+}
 .ide-menubar-item:hover {
-  background-color: var(--active-tab);
+  background-color: var(--secondary-bg);
 }
-
 .ide-menubar-item.active {
-  background-color: var(--active-tab);
-  color: var(--active-text);
+  background-color: var(--editor-bg); /* Active menu item matches editor bg */
+  color: var(--editor-text);
+  border: 1px solid var(--border-color);
+  border-bottom: none;
+}
+.ide-app-logo {
+  padding-right: 16px;
 }
 
-/* Top Toolbar - WebStorm style */
+
+/* Top Toolbar - Compact */
 .ide-toolbar {
   background-color: var(--secondary-bg);
-  border-bottom: 1px solid var(--panel-border-color);
+  border-bottom: 1px solid var(--border-color);
   padding: 0 8px;
-  height: 28px;
-    display: flex;
+  height: 30px; /* Compact height */
+  display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; /* Align items to start */
   user-select: none;
 }
 
@@ -98,726 +112,464 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 24px;
-  border-radius: 3px;
+  width: 26px; /* Slightly smaller */
+  height: 26px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.1s ease;
+  color: var(--editor-text);
+  opacity: 0.8;
 }
-
+.ide-toolbar-btn svg {
+  width: 16px;
+  height: 16px;
+}
 .ide-toolbar-btn:hover {
   background-color: var(--active-tab);
+  opacity: 1;
 }
-
 .ide-toolbar-btn:active {
   background-color: var(--selection-bg);
+  opacity: 1;
 }
-
 .ide-toolbar-separator {
   width: 1px;
-  height: 16px;
-  background-color: var(--panel-border-color);
-  margin: 0 6px;
+  height: 18px; /* Taller separator */
+  background-color: var(--border-color);
+  margin: 0 8px; /* Slightly more space */
 }
-
 .ide-toolbar-status {
-  font-size: 11px;
-  color: var(--text-color);
-  opacity: 0.8;
-  margin-left: 8px;
+  font-size: 12px; /* Slightly larger status */
+  color: var(--editor-text);
+  opacity: 0.7;
+  margin-left: 10px;
+}
+.ide-toolbar-status svg {
+  width: 12px;
+  height: 12px;
 }
 
-/* Sidebar - WebStorm style */
+/* Breadcrumbs - Compact */
+.breadcrumbs {
+  background-color: var(--secondary-bg); /* Match toolbar */
+  padding: 4px 12px;
+  font-size: 12px; /* Smaller font */
+  color: var(--editor-text); /* Use editor text color */
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  height: 28px; /* Compact height */
+  overflow: hidden;
+  white-space: nowrap;
+}
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  opacity: 0.8;
+}
+.breadcrumb-item:not(:last-child)::after {
+  content: "/";
+  padding: 0 8px; /* More spacing */
+  color: var(--editor-text);
+  opacity: 0.5;
+}
+.breadcrumb-item > span { /* Target the text span directly if needed */
+  opacity: 0.9;
+}
+
+
+/* Main Content Area */
+.ide-main {
+  display: flex; /* Changed to flex */
+  flex: 1; /* Allow main area to grow */
+  overflow: hidden; /* Prevent scrolling here, handle in children */
+  min-height: 0; /* Important for flex children */
+}
+
+/* Sidebar - Compact */
 .ide-sidebar {
-  background-color: var(--panel-bg);
+  background-color: var(--secondary-bg);
   border-right: 1px solid var(--border-color);
-  transition: width 0.3s ease;
+  transition: width 0.2s ease; /* Slightly faster transition */
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 0;
-  height: calc(100vh - 156px - var(--terminal-height, 200px));
-  position: sticky;
-  top: 96px; /* Account for menubar, toolbar, and breadcrumbs */
-  z-index: 25;
+  flex-shrink: 0; /* Prevent shrinking */
+  height: 100%; /* Fill parent height */
 }
-
 .ide-sidebar.collapsed {
   width: 48px !important;
 }
-
 .ide-sidebar-header {
-  padding: 10px 12px;
+  padding: 0 8px 0 12px; /* Adjusted padding */
   font-size: 11px;
-  font-weight: 500;
-  color: var(--text-color);
-  opacity: 0.7;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-weight: bold; /* Bolder header */
+  color: var(--editor-text); /* Use editor text color */
+  opacity: 0.9;
+  text-transform: none; /* No uppercase */
+  letter-spacing: 0;
   background-color: var(--secondary-bg);
-  border-bottom: 1px solid var(--panel-border-color);
-  height: 32px;
+  border-bottom: 1px solid var(--border-color);
+  height: 30px; /* Match toolbar/menubar height */
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0; /* Prevent shrinking */
 }
-
-.ide-sidebar-item {
+.ide-sidebar button { /* Sidebar button styling */
   display: flex;
   align-items: center;
-  padding: 8px 12px;
-  color: var(--text-color);
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: transparent;
+  border: none;
   cursor: pointer;
-  font-size: 13px;
-  transition: all 0.2s;
+  color: var(--editor-text); /* Use editor text color */
+  opacity: 0.7;
 }
-
-.ide-sidebar-item:hover {
+.ide-sidebar button:hover {
   background-color: var(--active-tab);
+  opacity: 1;
+}
+.ide-sidebar button svg {
+  width: 14px;
+  height: 14px;
 }
 
-.ide-sidebar-item.active {
-  background-color: var(--selection-bg);
-  color: var(--active-text);
-}
 
-.ide-sidebar-item svg {
-  margin-right: 8px;
+/* Structure View / File Tree */
+.structure-view-container { /* Add a container for scrolling */
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 0; /* Add some vertical padding */
+}
+.file-tree {
+  font-size: 13px;
+  user-select: none;
+  padding: 0; /* Remove padding here, handled by container/items */
+}
+.file-tree-item {
+  display: flex;
+  align-items: center;
+  padding: 4px 12px; /* Adjust padding */
+  cursor: pointer;
+  transition: background-color 0.1s;
+  color: var(--editor-text); /* Use editor text color */
+  white-space: nowrap; /* Prevent wrapping */
+}
+.file-tree-item svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px; /* Slightly less margin */
   flex-shrink: 0;
 }
-
-/* Main Content Area - WebStorm style */
-.ide-main {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  overflow: visible;
-  height: 100%;
-  padding-bottom: 32px;
-  width: 100%;
-  max-width: 100vw;
+.file-tree-item:hover {
+  background-color: var(--active-tab);
+}
+.file-tree-item.active {
+  background-color: var(--selection-bg);
+  color: #ffffff; /* White text on selection */
+}
+.folder-content { /* Indentation for nested items */
+  padding-left: 16px;
+}
+.ide-sidebar.collapsed .file-tree-item { /* Styles for collapsed sidebar items */
+  padding: 6px 0;
+  justify-content: center;
+}
+.ide-sidebar.collapsed .file-tree-item svg {
+  margin-right: 0;
+  width: 18px; /* Slightly larger icons when collapsed */
+  height: 18px;
+}
+.ide-sidebar.collapsed .file-tree-item span { /* Hide text label */
+  display: none;
 }
 
-/* Editor Area - WebStorm style */
-.ide-editor {
-  background-color: var(--editor-bg);
-  overflow: auto;
-  padding: 0;
-  color: var(--text-color);
+/* Editor Area Wrapper */
+.editor-area-wrapper {
+  display: flex;
   flex-direction: column;
-  height: auto;
-  min-height: 0;
-  flex: 1;
-  width: 100%;
-    border-left: 1px solid var(--panel-border-color);
+  flex: 1; /* Grow to fill space */
+  overflow: hidden; /* Prevent scroll, handle in editor */
+  min-width: 0; /* Important for flex children */
+  border-left: 1px solid var(--border-color); /* Separator */
 }
 
-.editor-content{
-  padding: 1rem 1.5rem;
-  flex-grow: 1;
-  overflow: auto;
-  height: auto;
-}
-
-/* WebStorm Code Editor */
-.code-block {
-   position: relative;
-  margin: 0;
-  padding: 1rem 0 1rem 3.65rem;
-  background-color: var(--code-bg);
-  counter-reset: line;
-  white-space: pre;
-  font-family: "JetBrains Mono", Menlo, Monaco, "Courier New", monospace;
-  font-size: 13px;
-  line-height: 1.5;
-  overflow-x: auto;
-}
-
-.code-block .line {
-  position: relative;
-  padding: 0 1rem;
-  min-height: 1.5em;
-}
-
-.code-block .line::before {
-  counter-increment: line;
-  content: counter(line);
-  position: absolute;
-  left: -3rem;
-  width: 2.75rem;
-  text-align: right;
-  color: var(--line-number);
-  padding-right: 0.75rem;
-}
-
-.code-block .line:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.code-block .line:hover::before {
-  color: var(--line-number-active);
-}
-
-/* Tabs - WebStorm style */
+/* Tabs - Compact */
 .ide-tabs {
   display: flex;
-  background-color: var(--panel-bg);
-  border-bottom: 1px solid var(--panel-border-color);
+  background-color: var(--secondary-bg); /* Match sidebar */
+  border-bottom: 1px solid var(--border-color);
   overflow-x: auto;
   user-select: none;
-  height: 35px;
+  height: 35px; /* Consistent height */
+  flex-shrink: 0; /* Prevent shrinking */
 }
-
 .ide-tab {
-  padding: 0 16px;
+  padding: 0 12px; /* Reduced padding */
   border-right: 1px solid var(--border-color);
   cursor: pointer;
-  color: var(--text-color);
-  opacity: 0.7;
+  color: var(--editor-text); /* Use editor text color */
+  opacity: 0.8; /* Slightly less opaque */
   white-space: nowrap;
   display: flex;
   align-items: center;
   font-size: 13px;
-  min-width: 75px;
   height: 100%;
   position: relative;
+  border-top: 2px solid transparent; /* Reserve space for active indicator */
+  margin-top: -2px; /* Pull up to align */
 }
-
+.ide-tab svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px; /* Adjust icon margin */
+}
 .ide-tab:hover {
-  opacity: 0.9;
-  background-color: var(--active-tab);
-}
-
-.ide-tab.active {
-  background-color: var(--active-tab);
   opacity: 1;
-  height: 36px; /* Makes the tab appear selected by extending 1px */
-  border-top: 2px solid var(--accent-color);
-  color: var(--active-text);
-  font-weight: 500;
+  background-color: var(--active-tab);
+}
+.ide-tab.active {
+  background-color: var(--editor-bg); /* Active tab matches editor */
+  opacity: 1;
+  border-top: 2px solid var(--accent-blue); /* Blue top border for active */
+  color: var(--editor-text); /* Ensure text is clearly visible */
+  font-weight: normal; /* No bold for active tab */
 }
 
-/*Bottom Panel - WebStorm style*/
-.ide-bottom-panel,.ide-bottom-panel-container {
+/* Editor */
+.ide-editor {
+  background-color: var(--editor-bg);
+  color: var(--editor-text); /* Ensure editor text color is set */
+  flex: 1; /* Grow to fill space */
+  overflow: auto; /* Allow editor content to scroll */
+  position: relative; /* For potential absolute elements inside */
+}
+.editor-content {
+  padding: 8px 16px; /* Adjust editor padding */
+  height: 100%; /* Try to fill height */
+  color: var(--editor-text); /* Explicitly set color for content within */
+}
+
+
+/* Right Copilot Sidebar */
+.copilot-sidebar {
   background-color: var(--secondary-bg);
-  border-top: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
+  transition: width 0.2s ease;
   overflow: hidden;
-  font-size: 12px;
-}
-
-.ide-bottom-panel-header {
-  background-color: var(--secondary-bg);
-  border-bottom: 1px solid var(--panel-border-color);
   display: flex;
-  align-items: center;
-  padding: 0 8px;
-  height: 30px;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 100%;
+}
+.copilot-sidebar.collapsed {
+  width: 48px !important;
+}
+.copilot-sidebar .ide-sidebar-header { /* Reuse sidebar header style */
+  border-left: 1px solid var(--border-color); /* Add left border */
+  border-right: none;
+}
+.copilot-sidebar.collapsed > div:first-child { /* Target the icon container when collapsed */
+   padding: 8px 0;
+}
+.copilot-sidebar.collapsed button { /* Center icons when collapsed */
+  margin: 4px auto;
+}
+.copilot-chat-container { /* Add container for chat scrolling */
+   flex-grow: 1;
+   overflow: auto;
+   padding: 8px;
 }
 
-.ide-bottom-panel-content {
-  padding: 8px;
-  overflow: hidden;
-  height: calc(100% - 30px);
-}
-
-/* Bottom Panel - Fixed at bottom of viewport */
-.ide-bottom-panel-container{
+/* Bottom Panel Area */
+.ide-bottom-panel-container {
   background-color: var(--secondary-bg);
-  position: fixed;
-  bottom: 24px; /* Accounts for status bar height */
-  left: 0;
-  right: 0;
-  z-index: 50;
+  position: relative; /* No longer fixed */
+  z-index: 15; /* Lower z-index */
   transition: height 0.2s ease;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0; /* Prevent shrinking */
+  overflow: hidden; /* Hide content when collapsed */
 }
-
 .ide-bottom-panel-collapsed {
-  height: 32px !important;
+  height: 30px !important; /* Match status bar height when collapsed */
 }
-
 .ide-bottom-panel-handle {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
+  height: 5px; /* Slightly larger handle */
   cursor: ns-resize;
-  z-index: 51;
+  z-index: 16;
   transform: translateY(-2px);
+  background-color: transparent; /* Invisible handle */
 }
-
-.ide-bottom-panel-handle:hover,
-.ide-bottom-panel-handle:active {
+.ide-bottom-panel-handle:hover {
   background-color: var(--accent-blue);
-  opacity: 0.8;
+  opacity: 0.5;
 }
-
 .ide-bottom-panel-tabs {
   display: flex;
   align-items: center;
-  height: 31px;
-  padding-left: 12px;
+  height: 30px; /* Match status bar height */
+  padding-left: 8px; /* Reduce padding */
   border-bottom: 1px solid var(--border-color);
   background-color: var(--secondary-bg);
+  user-select: none;
 }
-
 .ide-bottom-panel-tab {
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 12px; /* Adjust padding */
   height: 100%;
   cursor: pointer;
-  opacity: 0.7;
-  font-size: 12px;
+  opacity: 0.8;
+  font-size: 12px; /* Smaller font */
   border-right: 1px solid var(--border-color);
-  min-width: 100px;
-  justify-content: center;
+  white-space: nowrap;
 }
-
 .ide-bottom-panel-tab svg {
-  margin-right: 8px;
+  width: 14px; /* Smaller icons */
+  height: 14px;
+  margin-right: 6px;
 }
-
 .ide-bottom-panel-tab:hover {
-  opacity: 0.9;
-  background-color: var(--active-tab);
-}
-
-.ide-bottom-panel-tab.active {
-  background-color: var(--active-tab);
   opacity: 1;
-  border-top: 2px solid var(--accent-color);
-  font-weight: 500;
+  background-color: var(--active-tab);
 }
-
-.ide-bottom-panel-btn {
-  padding: 0 16px;
+.ide-bottom-panel-tab.active {
+  background-color: var(--editor-bg); /* Match editor background */
+  opacity: 1;
+  border-top: 2px solid var(--accent-blue); /* Blue top border */
+  margin-top: -2px; /* Adjust for border */
+  height: calc(100% + 2px); /* Adjust for border */
+  font-weight: normal;
+}
+.ide-bottom-panel-btn { /* Close/Open button */
+  padding: 0 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   cursor: pointer;
   opacity: 0.7;
+  margin-left: auto; /* Push to the right */
 }
-
 .ide-bottom-panel-btn:hover {
-  opacity: 0.9;
+  opacity: 1;
   background-color: var(--active-tab);
 }
 .ide-bottom-panel-content {
-  height: calc(100% - 31px);
+  height: calc(100% - 30px); /* Adjust height based on tabs */
   overflow: auto;
   position: relative;
-  border: 1px solid var(--panel-border-color);
-  background-color: var(--editor-bg);
+  background-color: var(--editor-bg); /* Content area matches editor */
+  color: var(--editor-text); /* <<<<<< Ensure content text color */
+}
+.ide-bottom-panel-content > div { /* Pad direct children */
+  padding: 8px 12px;
 }
 
-/* Status Bar - WebStorm style */
+
+/* Status Bar - Compact */
 .ide-statusbar {
   background-color: var(--statusbar-bg);
-  color: var(--text-color);
-  padding: 0;
-  font-size: 11px;
+  color: var(--editor-text); /* Use editor text color */
+  padding: 0 4px; /* Reduced padding */
+  font-size: 12px; /* Smaller font */
   user-select: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 24px;
-  border-top: 1px solid var(--panel-border-color);
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 51;
+  height: 22px; /* Very compact height */
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0; /* Prevent shrinking */
+  position: relative; /* No longer fixed */
+  z-index: 10;
 }
-
 .ide-statusbar-item {
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    border-right: 1px solid var(--border-color);
-  }
-  
-.ide-statusbar-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.ide-statusbar-item svg {
-  margin-right: 5px;
-}
-
-/* Scrollbars - WebStorm style */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--secondary-bg);
-}
-
-::-webkit-scrollbar-thumb {
-  background: #5a5d63;
-  border: 2px solid var(--secondary-bg);
-  border-radius: 6px;
-}
-
-:root.light ::-webkit-scrollbar-thumb {
-  background: #adb5bd;
-  border: 2px solid var(--secondary-bg);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #6e7177;
-}
-
-:root.light ::-webkit-scrollbar-thumb:hover {
-  background: #868e96;
-}+
-
-::-webkit-scrollbar-corner {
-  background: var(--secondary-bg);
-}  
-
-/* Syntax highlighting - WebStorm style */
-.keyword {
-  color: var(--keyword-color);
-}
-
-.string {
-  color: var(--string-color);
-}
-
-.comment {
-  color: var(--comment-color);
-  font-style: italic;
-}
-
-.number {
-  color: var(--number-color);
-}
-
-.type {
-  color: var(--type-color);
-}
-
-.method {
-  color: var(--method-color);
-}
-
-.class {
-  color: var(--class-color);
-}
-
-.function {
-  color: var(--function-color);
-}
-
-.constant {
-  color: var(--constant-color);
-}
-
-/* Other IDE elements */
-.breadcrumbs {
-  background-color: var(--breadcrumbs-bg);
-  padding: 4px 12px;
-  font-size: 12px;
-  color: var(--text-color);
+  padding: 0 8px; /* Reduced padding */
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--panel-border-color);
-  position: sticky;
-  top: 0;
-}
-
-.breadcrumb-item {
-  display: flex;
-  align-items: center;
-}
-
-.breadcrumb-item:not(:last-child)::after {
-  content: "/";
-  padding: 0 6px;
-  color: var(--text-color);
-  opacity: 0.5;
-}
-
-.gutter {
-  background-color: var(--gutter-bg);
-  padding-right: 10px;
-  text-align: right;
+  height: 100%;
   border-right: 1px solid var(--border-color);
+  opacity: 0.8;
+  cursor: default; /* Default cursor */
 }
-
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.ide-statusbar-item:last-child {
+  border-right: none; /* No border on last item */
 }
-
-.fade-in {
-  animation: fadeIn 0.2s ease-in-out;
-}
-
-/* Cursor animation */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.animate-blink {
-  animation: blink 1s step-end infinite;
-}
-
-/* File tree styles - WebStorm style */
-.file-tree {
-  font-size: 13px;
-  user-select: none;
-  padding: 0.5rem 0;
-}
-
-.file-tree-item {
-  display: flex;
-  align-items: center;
-  padding: 2px 12px;
-  cursor: pointer;
-  transition: all 0.1s;
-  color: var(--text-color);
-}
-
-.file-tree-item:hover {
-  background-color: var(--active-tab);
-}
-
-.file-tree-item.active {
-  background-color: var(--selection-bg);
-  color: var(--active-text);
-}
-
-.folder-item {
-  color: var(--accent-color);
-  font-weight: normal;
-}
-
-.file-item-js, .file-item-jsx {
-  color: #82AAFF;
-}
-
-.file-item-ts, .file-item-tsx {
-  color: #4EC9B0;
-}
-
-.file-item-css {
-  color: #CE9178;
-}
-
-.file-item-json {
-  color: #D4D4D4;
-}
-
-/* Copilot Sidebar Styles */
-.copilot-sidebar {
-  background-color: var(--panel-bg);
-  border-left: 1px solid var(--border-color);
-  border-right: none;
-  transition: width 0.3s ease;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  height: calc(100vh - 156px - var(--terminal-height, 200px));
-  position: sticky;
-  top: 96px; /* Account for menubar, toolbar, and breadcrumbs */
-  z-index: 26;
-}
-
-.copilot-sidebar.collapsed {
-  width: 48px !important;
-}
-
-.copilot-sidebar.collapsed .file-tree-item {
-  padding-left: 0.5rem !important;
-  justify-content: center;
-}
-
-/* Tooltips */
-.ide-tooltip {
-  position: absolute;
-  background-color: var(--secondary-bg);
-  color: var(--text-color);
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
-  box-shadow: var(--shadow-md);
-  z-index: 50;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-.ide-sidebar button{
-  color: var(--text-color);
-}
-
-
-::-webkit-scrollbar-thumb:hover {
-  background: #6e7177;
-}
-
-:root.light ::-webkit-scrollbar-thumb:hover {
-  background: #868e96;
-}
-
-/* File Icons */
-.file-icon {
-  width: 16px;
-  height: 16px;
-  margin-right: 0.5rem;
-}
-
-/* Folder collapse animation */
-.folder-content {
-  overflow: hidden;
-  transition: height 0.2s ease-in-out;
-}
-
-/* Icon-only mode styles */
-.icon-only {
-  width: 48px;
-  display: flex;
-  justify-content: center;
-}
-
-.icon-only .label {
-  display: none;
-}
-
-/* Tooltip styles */
-[data-tooltip] {
-  position: relative;
-}
-
-[data-tooltip]:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  left: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: var(--secondary-bg);
-  color: var(--text-color);
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
-  white-space: nowrap;
-  z-index: 50;
-  margin-left: 0.5rem;
-  box-shadow: var(--shadow-md);
-}
-
-/* Syntax highlighting */
-.syntax-highlighter {
-  transition: none !important;
-}
-
-/* Cursor animation */
-@keyframes blink{
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.animate-blink {
-  animation: blink 1s step-end infinite;
-}
-
-/* Page-specific scroll behavior */
-.prose {
-  overflow: visible;
-}
-
-/* Ensure project and article content scrolls properly */
-.min-h-screen {
-  min-height: 100vh;
-  overflow: visible;
-}
-
-/* Fix specific container scrolling */
-.max-h-[80vh] {
-  max-height: 80vh;
-  overflow: auto;
-}
-
-/* Make sure content containers scroll properly */
-.mx-auto {
-  overflow: visible;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .ide-menubar {
-    overflow-x: auto;
-  }
-  
-  .ide-main {
-    grid-template-columns: 1fr;
-  }
-  
-  .ide-sidebar:not(.collapsed) {
-    position: fixed;
-    top: 65px;
-    left: 0;
-    width: 50% !important;
-    bottom: 56px;
-    z-index: 30;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    height: auto;
-  }
-  
-  .copilot-sidebar:not(.collapsed) {
-    position: fixed;
-    top: 65px;
-    right: 0;
-    width: 50% !important;
-    bottom: 56px;
-    z-index: 31;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    height: auto;
-  }
-}
-
-/* Collapsed sidebar icon styling */
-.ide-sidebar.collapsed .ide-sidebar-item {
-  justify-content: center;
-  padding: 8px 0;
-}
-
-.ide-sidebar.collapsed .ide-sidebar-item svg {
-  margin-right: 0;
-}
-
-.ide-sidebar button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 3px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: var(--text-color);
-  opacity: 0.7;
-}
-
-.ide-sidebar button:hover {
+.ide-statusbar-item:hover {
   background-color: var(--active-tab);
   opacity: 1;
 }
-
-/* Hide scrollbar on mobile menus */
-.ide-menubar {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+.ide-statusbar-item svg {
+  width: 12px; /* Smaller icons */
+  height: 12px;
+  margin-right: 4px; /* Less margin */
+  opacity: 0.7;
 }
-.ide-menubar::-webkit-scrollbar {
-  display: none;  /* Safari and Chrome */
+
+/* Scrollbars - Subtle */
+::-webkit-scrollbar {
+  width: 8px; /* Narrower */
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent; /* Invisible track */
+}
+::-webkit-scrollbar-thumb {
+  background: #555a5f; /* Subtle thumb */
+  border: none; /* No border */
+  border-radius: 4px;
+}
+:root.light ::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6b6b6b;
+}
+:root.light ::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+::-webkit-scrollbar-corner {
+  background: var(--secondary-bg);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .ide-window {
+     /* Allow vertical scroll on mobile if needed, though main layout aims to avoid it */
+    overflow-y: auto;
+  }
+  .ide-main {
+    flex-direction: column; /* Stack vertically */
+  }
+  .ide-sidebar, .copilot-sidebar {
+    width: 100%; /* Full width */
+    height: auto; /* Adjust height */
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .editor-area-wrapper {
+     border-left: none;
+  }
+  .copilot-sidebar {
+      border-left: none;
+      border-top: 1px solid var(--border-color);
+  }
+  .ide-menubar, .ide-toolbar, .breadcrumbs, .ide-tabs {
+    overflow-x: auto; /* Allow horizontal scroll for headers/tabs */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .ide-menubar::-webkit-scrollbar, .ide-toolbar::-webkit-scrollbar, .breadcrumbs::-webkit-scrollbar, .ide-tabs::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+  }
 }
